@@ -1,5 +1,6 @@
 package com.dnlab.tack_together.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -76,9 +77,9 @@ public class SignupActivity extends AppCompatActivity {
 
                             AlertDialog alertDialog;
                             if (duplicated) {
-                                alertDialog = getPositiveAlertDialogByMessage("사용할 수 없는 아이디입니다.");
+                                alertDialog = getPositiveAlertDialog("사용할 수 없는 아이디입니다.");
                             } else {
-                                alertDialog = getPositiveAlertDialogByMessage("사용할 수 있는 아이디입니다.");
+                                alertDialog = getPositiveAlertDialog("사용할 수 있는 아이디입니다.");
                             }
                             alertDialog.show();
                         } catch (IOException e) {
@@ -117,12 +118,10 @@ public class SignupActivity extends AppCompatActivity {
                         int responseCode = response.code();
                         if (responseCode == 200) {
                             ResponseRegistration registration = response.body();
-                            AlertDialog alertDialog = getPositiveAlertDialogByMessage("환영합니다 " + registration.getName() + "님!");
-                            alertDialog.show();
-
-                            finish();
+                            assert registration != null;
+                            getPositiveAlertDialog("환영합니다 " + registration.getName() + "님!", (dialog, which) -> finish()).show();
                         } else if (responseCode == 409) {
-                            AlertDialog alertDialog = getPositiveAlertDialogByMessage("사용할 수 없는 아이디입니다.");
+                            AlertDialog alertDialog = getPositiveAlertDialog("사용할 수 없는 아이디입니다.");
                             alertDialog.show();
                         }
                     }
@@ -139,7 +138,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private boolean checkIsEqualTwoPasswords(String password, String checkPassword) {
         if (!(password.equals(checkPassword))) {
-            dialog = getPositiveAlertDialogByMessage("비밀번호가 일치하지 않습니다.");
+            dialog = getPositiveAlertDialog("비밀번호가 일치하지 않습니다.");
             dialog.show();
             return false;
         }
@@ -147,7 +146,11 @@ public class SignupActivity extends AppCompatActivity {
         return true;
     }
 
-    private AlertDialog getPositiveAlertDialogByMessage(String message) {
-        return new AlertDialog.Builder(SignupActivity.this).setMessage(message).setPositiveButton("확인",null).create();
+    private AlertDialog getPositiveAlertDialog(String message) {
+        return new AlertDialog.Builder(SignupActivity.this).setMessage(message).setPositiveButton("확인", null).create();
+    }
+
+    private AlertDialog getPositiveAlertDialog(String message, DialogInterface.OnClickListener listener) {
+        return new AlertDialog.Builder(SignupActivity.this).setMessage(message).setPositiveButton("확인", listener).create();
     }
 }
