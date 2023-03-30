@@ -31,7 +31,6 @@ public class SignupActivity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private EditText checkPasswordEditText;
-    private Button usernameCheck, signupButton;
     private AlertDialog dialog;
     private final String TAG = "[" + SignupActivity.class.getSimpleName() + "] ";
 
@@ -50,7 +49,7 @@ public class SignupActivity extends AppCompatActivity {
         checkPasswordEditText = findViewById(R.id.password_check);
 
         // 아이디 중복 확인
-        usernameCheck = findViewById(R.id.check_button);
+        Button usernameCheck = findViewById(R.id.check_button);
         usernameCheck.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString().trim();
 
@@ -96,7 +95,7 @@ public class SignupActivity extends AppCompatActivity {
 
         });
 
-        signupButton = findViewById(R.id.join_button);
+        Button signupButton = findViewById(R.id.join_button);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

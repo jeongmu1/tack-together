@@ -1,5 +1,9 @@
 package com.dnlab.tack_together.activity;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,6 +22,12 @@ public class MainActivity extends AppCompatActivity {
     private static MainActivity instance;
 
     private Button signupButton;
+    private Button loginButton;
+
+    private ActivityResultLauncher<Intent> loginLauncher;
+
+    private String accessToken = null;
+    private String refreshToken = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +45,25 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
             startActivityForResult(intent, 101);
         });
+
+        loginButton = findViewById(R.id.to_login_button);
+
+        loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                (result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        assert result.getData() != null;
+                        Bundle bundle = result.getData().getExtras();
+                        Intent intent = bundle.getParcelable("INTENT");
+                        accessToken = intent.getStringExtra("ACCESS_TOKEN");
+                        refreshToken = intent.getStringExtra("REFRESH_TOKEN");
+                    }
+                }));
+
+        loginButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            loginLauncher.launch(intent);
+        });
+
     }
 
     public Retrofit getRetrofit() {

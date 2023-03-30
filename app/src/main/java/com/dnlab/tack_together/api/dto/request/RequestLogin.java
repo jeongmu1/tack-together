@@ -6,16 +6,22 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Data;
 
-@Data
 public class RequestLogin {
     @SerializedName("username")
     private final String username;
-    @SerializedName("name")
-    private final String name;
+    @SerializedName("password")
+    private final String password;
 
-    @Builder
-    public RequestLogin(String username, String name) {
+    public RequestLogin(String username, String password) {
         this.username = username;
-        this.name = name;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
