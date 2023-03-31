@@ -39,13 +39,24 @@ public class LoginActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.login_username);
         passwordEditText = findViewById(R.id.login_password);
 
-        Button loginButton = findViewById(R.id.login_button);
-        loginButton.setOnClickListener(v -> {
+        // 로그인 버튼
+        findViewById(R.id.login_button).setOnClickListener(v -> {
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
             RequestLogin requestLogin = new RequestLogin(username, password);
 
             login(requestLogin);
+        });
+
+        // 가입 버튼
+        findViewById(R.id.join_button).setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
+
+        // 취소 버튼
+        findViewById(R.id.delete_login).setOnClickListener(v -> {
+            finish();
         });
     }
 

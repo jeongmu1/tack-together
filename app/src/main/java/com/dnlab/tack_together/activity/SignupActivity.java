@@ -3,7 +3,6 @@ package com.dnlab.tack_together.activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -96,42 +95,44 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         Button signupButton = findViewById(R.id.join_button);
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        signupButton.setOnClickListener(v -> {
 
-                String username = usernameEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
-                String name = nameEditText.getText().toString().trim();
-                String checkPassword = checkPasswordEditText.getText().toString().trim();
+            String username = usernameEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
+            String name = nameEditText.getText().toString().trim();
+            String checkPassword = checkPasswordEditText.getText().toString().trim();
 
-                if (!checkIsEqualTwoPasswords(password, checkPassword)) {
-                    return;
+            if (!checkIsEqualTwoPasswords(password, checkPassword)) {
+                return;
+            }
+
+            Call<ResponseRegistration> call = api.signUp(new RequestRegistration(username, password, name));
+
+            call.enqueue(new Callback<>() {
+                @Override
+                public void onResponse(Call<ResponseRegistration> call, Response<ResponseRegistration> response) {
+                    int responseCode = response.code();
+                    if (responseCode == 200) {
+                        ResponseRegistration registration = response.body();
+                        assert registration != null;
+                        getPositiveAlertDialog("환영합니다 " + registration.getName() + "님!", (dialog, which) -> finish()).show();
+                    } else if (responseCode == 409) {
+                        AlertDialog alertDialog = getPositiveAlertDialog("사용할 수 없는 아이디입니다.");
+                        alertDialog.show();
+                    }
                 }
 
-                Call<ResponseRegistration> call = api.signUp(new RequestRegistration(username, password, name));
+                @Override
+                public void onFailure(Call<ResponseRegistration> call, Throwable t) {
+                    Log.e(TAG, "Failed to get data", t);
+                }
+            });
 
-                call.enqueue(new Callback<>() {
-                    @Override
-                    public void onResponse(Call<ResponseRegistration> call, Response<ResponseRegistration> response) {
-                        int responseCode = response.code();
-                        if (responseCode == 200) {
-                            ResponseRegistration registration = response.body();
-                            assert registration != null;
-                            getPositiveAlertDialog("환영합니다 " + registration.getName() + "님!", (dialog, which) -> finish()).show();
-                        } else if (responseCode == 409) {
-                            AlertDialog alertDialog = getPositiveAlertDialog("사용할 수 없는 아이디입니다.");
-                            alertDialog.show();
-                        }
-                    }
+        });
 
-                    @Override
-                    public void onFailure(Call<ResponseRegistration> call, Throwable t) {
-                        Log.e(TAG, "Failed to get data", t);
-                    }
-                });
-
-            }
+        Button deleteButton = findViewById(R.id.delete_join);
+        deleteButton.setOnClickListener(v -> {
+            finish();
         });
     }
 
