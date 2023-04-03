@@ -3,9 +3,6 @@ package com.dnlab.tack_together.api.dto.request;
 
 import com.google.gson.annotations.SerializedName;
 
-import lombok.Builder;
-import lombok.Data;
-
 public class RequestLogin {
     @SerializedName("username")
     private final String username;
