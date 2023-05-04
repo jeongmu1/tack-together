@@ -1,4 +1,4 @@
-package com.dnlab.tack_together.api;
+package com.dnlab.tack_together.retrofit;
 
 
 import android.util.Log;

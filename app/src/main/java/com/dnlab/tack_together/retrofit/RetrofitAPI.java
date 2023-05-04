@@ -1,6 +1,7 @@
-package com.dnlab.tack_together.api;
+package com.dnlab.tack_together.retrofit;
 
 import com.dnlab.tack_together.api.dto.request.RequestLogin;
+import com.dnlab.tack_together.api.dto.request.RequestRefreshToken;
 import com.dnlab.tack_together.api.dto.request.RequestRegistration;
 import com.dnlab.tack_together.api.dto.response.ResponseLogin;
 import com.dnlab.tack_together.api.dto.response.ResponseRegistration;
@@ -21,4 +22,7 @@ public interface RetrofitAPI {
 
     @POST("/api/auth/signIn")
     Call<ResponseLogin> login(@Body RequestLogin requestLogin);
+
+    @POST("/api/auth/refreshToken")
+    Call<ResponseLogin> refreshToken(@Body RequestRefreshToken requestRefreshToken);
 }

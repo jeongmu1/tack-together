@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFC107</color>
-    <color name="colorPrimaryDark">#FF7043</color>
-    <color name="colorAccent">#FFAB40</color>
+    <color name="colorPrimary">#FFEB3B</color>
+    <color name="colorPrimaryDark">#FBC02D</color>
+    <color name="colorAccent">#FFC107</color>
     <color name="colorGray">#8C8C8C</color>
+    <color name="lightYellow">#FFFCDA</color>
     <string name="app_name">택 투게더</string>
+    <string name="app_name_eng">Tack Together</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

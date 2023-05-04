@@ -17,4 +17,15 @@
     <style name="urgentButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+    <style name="MainTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/lightYellow</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:background">@color/lightYellow</item>
+    </style>
 </resources>
