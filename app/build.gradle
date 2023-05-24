@@ -2,9 +2,13 @@ plugins {
     id 'com.android.application'
 }
 
-def localProperties = new Properties()
-localProperties.load(new FileInputStream(rootProject.file("local.properties")))
-def NAVER_MAP_CLIENTID = localProperties.getProperty("NAVER_MAP_CLIENTID")
+//def localProperties = new Properties()
+//localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+//def NAVER_MAP_CLIENTID = localProperties.getProperty("NAVER_MAP_CLIENTID")
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def NAVER_MAP_CLIENTID = properties.getProperty("NAVER_MAP_CLIENTID")
+
 
 android {
     namespace 'com.dnlab.tack_together'
@@ -20,12 +24,15 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [NAVER_MAP_CLIENTID : NAVER_MAP_CLIENTID]
+        //manifestPlaceholders = [WEBSOCKET_URL : WEBSOCKET_URL]
+        buildConfigField "String", "API_BASE_URL", properties['API_BASE_URL']
+        buildConfigField "String", "WEBSOCKET_URL", properties['WEBSOCKET_URL']
     }
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_BASE_URL", "" + localProperties['API_BASE_URL'] + "")
-            buildConfigField("String", "WEBSOCKET_URL", "" + localProperties['WEBSOCKET_URL'] + "")
+//            buildConfigField("String", "API_BASE_URL", "" + localProperties['API_BASE_URL'] + "")
+//            buildConfigField("String", "WEBSOCKET_URL", "" + localProperties['WEBSOCKET_URL'] + "")
         }
         release {
             minifyEnabled false

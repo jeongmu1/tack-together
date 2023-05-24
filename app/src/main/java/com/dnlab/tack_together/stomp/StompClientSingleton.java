@@ -6,7 +6,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dnlab.tack_together.BuildConfig.WEBSOCKET_URL;
+
 import io.reactivex.disposables.Disposable;
+import ua.naiksoftware.stomp.BuildConfig;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompHeader;
@@ -15,7 +18,7 @@ public class StompClientSingleton {
 
     private static final String TAG = "[StompService]";
 
-    private static final String STOMP_URL =WEBSOCKET_URL;
+    private static final String STOMP_URL = WEBSOCKET_URL;
             //"ws://192.168.64.51:8082/match?token=";
     private static final String TOKEN_TEMP = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzdG9tcCIsImlhdCI6MTY4NDEzMTA3MCwiZXhwIjoxNjg1MzQwNjcwLCJhdXRoIjoiUk9MRV9NRU1CRVIifQ.2e2I7Y1GCwo10XZfRQOG6qKTdyLBe58pV3CXpmv_w37lrV4V3M7M96mbXaT3_wP_";
 
