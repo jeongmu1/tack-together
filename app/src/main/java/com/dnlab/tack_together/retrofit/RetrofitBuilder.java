@@ -39,6 +39,14 @@ public class RetrofitBuilder {
         return instance;
     }
 
+    public synchronized static RetrofitBuilder getInstance() {
+        if (instance == null) {
+            throw new NullPointerException();
+        }
+
+        return instance;
+    }
+
     public Retrofit getRetrofit() {
         return retrofit;
     }

@@ -5,11 +5,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.dnlab.tack_together.R;
+import com.dnlab.tack_together.api.dto.auth.LoginResponseDTO;
+import com.dnlab.tack_together.api.dto.auth.RefreshTokenRequestDTO;
 import com.dnlab.tack_together.api.dto.auth.TestTokenResponseDTO;
+import com.dnlab.tack_together.common.jwt.TokenManager;
 import com.dnlab.tack_together.retrofit.AuthorizationAPI;
 import com.dnlab.tack_together.retrofit.RetrofitBuilder;
 
@@ -21,6 +23,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private static final int SPLASH_SCREEN_TIMEOUT = 3000; // 3 seconds
     private final String TAG = "SplashScreenActivity";
+    private TokenManager tokenManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +40,57 @@ public class SplashScreenActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
                         if (response.body().isAuthorized()) {
-                            Intent mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                            startActivity(mainIntent);
-                            finish();
+                            startMainActivity();
                         } else {
-                            // 로그인 액티비티 넘어가기 예정
-                            startLoginActivity();
+                            tryAuthenticateWithRefreshToken();
                         }
                     } else {
-                        // 로그인 액티비티 넘어가기 예정
-                        startLoginActivity();
+                        tryAuthenticateWithRefreshToken();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<TestTokenResponseDTO> call, Throwable t) {
-                    // 로그인 액티비티 넘어가기 예정
-                    startLoginActivity();
+                    tryAuthenticateWithRefreshToken();
                 }
             });
         }, SPLASH_SCREEN_TIMEOUT);
+    }
+
+    private void tryAuthenticateWithRefreshToken() {
+        String refreshToken = tokenManager.getRefreshToken();
+        AuthorizationAPI authorizationAPI = RetrofitBuilder
+                .getInstance()
+                .getRetrofit()
+                .create(AuthorizationAPI.class);
+
+        RefreshTokenRequestDTO refreshTokenRequestDTO = new RefreshTokenRequestDTO(refreshToken);
+        Call<LoginResponseDTO> call = authorizationAPI.refreshToken(refreshTokenRequestDTO);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {
+                if (response.isSuccessful()) {
+                    LoginResponseDTO loginResponseDTO = response.body();
+                    assert loginResponseDTO != null;
+                    tokenManager.storeAccessToken(loginResponseDTO.getAccessToken());
+                    tokenManager.storeRefreshToken(loginResponseDTO.getRefreshToken());
+                    startMainActivity();
+                } else {
+                    startLoginActivity();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
+                startLoginActivity();
+            }
+        });
+    }
+
+    private void startMainActivity() {
+        Intent mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
     }
 
     private void startLoginActivity() {
