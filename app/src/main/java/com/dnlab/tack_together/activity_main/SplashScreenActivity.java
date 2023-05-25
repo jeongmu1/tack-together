@@ -10,7 +10,7 @@ import com.dnlab.tack_together.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN_TIMEOUT = 3000; // 3 seconds
+    private static final int SPLASH_SCREEN_TIMEOUT = 3000; // 3 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
