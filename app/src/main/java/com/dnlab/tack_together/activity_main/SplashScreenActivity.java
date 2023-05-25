@@ -12,6 +12,7 @@ import com.dnlab.tack_together.api.dto.auth.LoginResponseDTO;
 import com.dnlab.tack_together.api.dto.auth.RefreshTokenRequestDTO;
 import com.dnlab.tack_together.api.dto.auth.TestTokenResponseDTO;
 import com.dnlab.tack_together.common.jwt.TokenManager;
+import com.dnlab.tack_together.common.jwt.TokenManagerImpl;
 import com.dnlab.tack_together.retrofit.AuthorizationAPI;
 import com.dnlab.tack_together.retrofit.RetrofitBuilder;
 
@@ -23,7 +24,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private static final int SPLASH_SCREEN_TIMEOUT = 3000; // 3 seconds
     private final String TAG = "SplashScreenActivity";
-    private TokenManager tokenManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void tryAuthenticateWithRefreshToken() {
+        TokenManager tokenManager = new TokenManagerImpl(getApplicationContext());
         String refreshToken = tokenManager.getRefreshToken();
+        if (refreshToken == null) {
+            startLoginActivity();
+        }
+
         AuthorizationAPI authorizationAPI = RetrofitBuilder
                 .getInstance()
                 .getRetrofit()
