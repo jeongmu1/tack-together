@@ -1,10 +1,10 @@
-package com.dnlab.tack_together.api.dto.response;
+package com.dnlab.tack_together.api.dto.auth;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Set;
 
-public class ResponseRegistration {
+public class RegistratinoResponseDTO {
     @SerializedName("username")
     private final String username;
     @SerializedName("password")
@@ -14,7 +14,7 @@ public class ResponseRegistration {
     @SerializedName("authorities")
     private final Set<String> authorities;
 
-    public ResponseRegistration(String username, String password, String name, Set<String> authorities) {
+    public RegistratinoResponseDTO(String username, String password, String name, Set<String> authorities) {
         this.username = username;
         this.password = password;
         this.name = name;
