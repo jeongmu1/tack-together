@@ -1,12 +1,14 @@
-package com.dnlab.tack_together.api.dto.request;
+package com.dnlab.tack_together.api.dto.auth;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RequestRefreshToken {
+import java.io.Serializable;
+
+public class RefreshTokenRequestDTO implements Serializable {
     @SerializedName("refreshToken")
     private final String refreshToken;
 
-    public RequestRefreshToken(String refreshToken){
+    public RefreshTokenRequestDTO(String refreshToken){
         this.refreshToken = refreshToken;
     }
 
