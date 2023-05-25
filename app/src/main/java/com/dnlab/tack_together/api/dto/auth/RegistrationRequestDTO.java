@@ -6,13 +6,16 @@ import java.io.Serializable;
 
 public class RegistrationRequestDTO implements Serializable {
     @SerializedName("username")
-    private final String username;
+    private String username;
     @SerializedName("password")
-    private final String password;
+    private String password;
     @SerializedName("name")
-    private final String name;
+    private String name;
     @SerializedName("nickname")
-    private final String nickname;
+    private String nickname;
+
+    public RegistrationRequestDTO() {
+    }
 
     public RegistrationRequestDTO(String username, String password, String name, String nickname) {
         this.username = username;

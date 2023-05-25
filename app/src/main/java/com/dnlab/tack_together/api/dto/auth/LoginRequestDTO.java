@@ -7,9 +7,12 @@ import java.io.Serializable;
 
 public class LoginRequestDTO implements Serializable {
     @SerializedName("username")
-    private final String username;
+    private String username;
     @SerializedName("password")
-    private final String password;
+    private String password;
+
+    public LoginRequestDTO() {
+    }
 
     public LoginRequestDTO(String username, String password) {
         this.username = username;

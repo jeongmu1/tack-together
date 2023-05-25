@@ -6,7 +6,10 @@ import java.io.Serializable;
 
 public class RefreshTokenRequestDTO implements Serializable {
     @SerializedName("refreshToken")
-    private final String refreshToken;
+    private String refreshToken;
+
+    public RefreshTokenRequestDTO() {
+    }
 
     public RefreshTokenRequestDTO(String refreshToken){
         this.refreshToken = refreshToken;

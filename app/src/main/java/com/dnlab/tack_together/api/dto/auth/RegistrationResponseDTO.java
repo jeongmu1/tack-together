@@ -7,13 +7,16 @@ import java.util.Set;
 
 public class RegistrationResponseDTO implements Serializable {
     @SerializedName("username")
-    private final String username;
+    private String username;
     @SerializedName("password")
-    private final String password;
+    private String password;
     @SerializedName("name")
-    private final String name;
+    private String name;
     @SerializedName("authorities")
-    private final Set<String> authorities;
+    private Set<String> authorities;
+
+    public RegistrationResponseDTO() {
+    }
 
     public RegistrationResponseDTO(String username, String password, String name, Set<String> authorities) {
         this.username = username;

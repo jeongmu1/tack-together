@@ -6,11 +6,14 @@ import java.io.Serializable;
 
 public class LoginResponseDTO implements Serializable {
     @SerializedName("username")
-    private final String username;
+    private String username;
     @SerializedName("accessToken")
-    private final String accessToken;
+    private String accessToken;
     @SerializedName("refreshToken")
-    private final String refreshToken;
+    private String refreshToken;
+
+    public LoginResponseDTO() {
+    }
 
     public LoginResponseDTO(String username, String accessToken, String refreshToken) {
         this.username = username;
