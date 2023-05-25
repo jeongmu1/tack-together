@@ -1,16 +1,21 @@
-package com.dnlab.tack_together.api.dto.response;
+package com.dnlab.tack_together.api.dto.auth;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseLogin {
-    @SerializedName("username")
-    private final String username;
-    @SerializedName("accessToken")
-    private final String accessToken;
-    @SerializedName("refreshToken")
-    private final String refreshToken;
+import java.io.Serializable;
 
-    public ResponseLogin(String username, String accessToken, String refreshToken) {
+public class LoginResponseDTO implements Serializable {
+    @SerializedName("username")
+    private String username;
+    @SerializedName("accessToken")
+    private String accessToken;
+    @SerializedName("refreshToken")
+    private String refreshToken;
+
+    public LoginResponseDTO() {
+    }
+
+    public LoginResponseDTO(String username, String accessToken, String refreshToken) {
         this.username = username;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
