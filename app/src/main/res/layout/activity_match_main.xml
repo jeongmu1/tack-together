@@ -7,11 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".activity_match.MatchMainActivity">
 
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageViewTemp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/destinationLayout"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/titleBarLayout"-->
+    <!--        tools:srcCompat="@drawable/mappreview" />-->
+
+    <com.naver.maps.map.MapView
+        android:id="@+id/matchMainMapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/matchedOpponentInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <LinearLayout
-        android:id="@+id/titleBarLayout"
+        android:id="@+id/matchMainTitleBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lightYellow"
+        android:background="@color/lightYellowTransparent"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,42 +50,24 @@
 
 
         <ImageButton
-            android:id="@+id/menuButton"
+            android:id="@+id/matchMainMenuButton"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="#00FFFFFF"
-            app:srcCompat="@drawable/ic_action_menu" />
+            app:srcCompat="@drawable/ic_button_menu" />
 
 
     </LinearLayout>
 
-<!--    <ImageView-->
-<!--        android:id="@+id/imageViewTemp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/destinationLayout"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/titleBarLayout"-->
-<!--        tools:srcCompat="@drawable/mappreview" />-->
-
-    <com.naver.maps.map.MapView
-        android:id="@+id/map_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/destinationLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleBarLayout"/>
 
     <LinearLayout
-        android:id="@+id/destinationLayout"
+        android:id="@+id/matchedOpponentInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/searchRangeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/matchMainSearchRangeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -93,12 +94,12 @@
 
     <!-- '검색 범위' 텍스트와 버튼 -->
     <LinearLayout
-        android:id="@+id/searchRangeLayout"
+        android:id="@+id/matchMainSearchRangeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/destinationRangeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/matchMainDestinationRangeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -134,7 +135,7 @@
 
     <!-- '목적지 범위' 텍스트와 버튼 -->
     <LinearLayout
-        android:id="@+id/destinationRangeLayout"
+        android:id="@+id/matchMainDestinationRangeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
