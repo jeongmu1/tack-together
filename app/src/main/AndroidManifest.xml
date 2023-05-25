@@ -16,6 +16,12 @@
         android:theme="@style/Theme.TackTogether"
         tools:targetApi="31">
         <activity
+            android:name=".activity_match.MatchMatchedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity_match.MatchMatchingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity_match.MatchMainActivity"
             android:exported="false" />
         <activity
@@ -36,7 +42,7 @@
         <activity
             android:name=".activity_main.MainActivity"
             android:exported="false"
-            android:theme="@style/MainTheme"></activity>
+            android:theme="@style/MainTheme" />
     </application>
 
 </manifest>
