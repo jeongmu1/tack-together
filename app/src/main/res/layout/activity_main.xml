@@ -115,7 +115,7 @@
                 android:layout_height="59dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="#FFFFFF"
+                android:background="#00FFFFFF"
                 android:text="이용기록"
                 android:textColor="#000000"
                 android:textSize="40sp"
