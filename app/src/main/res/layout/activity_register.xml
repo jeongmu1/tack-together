@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity_main.LoginActivity">
+    android:background="#FFFFFF"
+    tools:context=".activity_main.RegisterActivity">
 
     <LinearLayout
-        android:id="@+id/loginLogoLayout"
+        android:id="@+id/register_logo_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingStart="60dp"
         android:paddingEnd="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/login_cancel_button"
+        app:layout_constraintBottom_toTopOf="@+id/register_cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -39,46 +40,111 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:text="회원 로그인"
+            android:text="회원 가입"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="" />
 
-        <EditText
-            android:id="@+id/login_username"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textSize="20sp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
             android:ems="10"
-            android:hint="아이디"
+            android:text="아이디"
+            android:inputType="text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/register_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/check_duplication_button"
+                style="@style/defaultButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                android:text="확인" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:ems="10"
+            android:text="비밀번호"
             android:inputType="text" />
 
         <EditText
-            android:id="@+id/login_password"
+            android:id="@+id/register_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-
             android:textSize="20sp"
             android:ems="10"
-            android:hint="비밀번호"
             android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/login_button"
-            style="@style/defaultButton"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:ems="10"
+            android:text="이름"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/register_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:textSize="20sp"
-            android:text="로그인" />
+            android:ems="10"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:ems="10"
+            android:text="닉네임"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/register_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textSize="20sp"
+            android:ems="10"
+            android:inputType="text" />
+
 
         <Button
-            android:id="@+id/login_register_button"
-            android:background="#00000000"
-            android:textColor="@color/colorAccent"
+            android:id="@+id/register_button"
+            style="@style/defaultButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -89,7 +155,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/login_cancel_button"
+        android:id="@+id/register_cancel_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
