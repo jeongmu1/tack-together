@@ -65,7 +65,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
 
         AuthorizationAPI authorizationAPI = RetrofitBuilder
-                .getInstance()
+                .getInstance(getApplicationContext())
                 .getRetrofit()
                 .create(AuthorizationAPI.class);
 
