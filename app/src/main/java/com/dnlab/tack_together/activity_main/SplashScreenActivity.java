@@ -62,6 +62,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         String refreshToken = tokenManager.getRefreshToken();
         if (refreshToken == null) {
             startAuthenticationActivity();
+            return;
         }
 
         AuthorizationAPI authorizationAPI = RetrofitBuilder
