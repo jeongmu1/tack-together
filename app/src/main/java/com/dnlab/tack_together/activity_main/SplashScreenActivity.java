@@ -30,31 +30,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            RetrofitBuilder retrofitBuilder = RetrofitBuilder.getInstance(getApplicationContext());
-            AuthorizationAPI authorizationAPI = retrofitBuilder.getRetrofit().create(AuthorizationAPI.class);
-            Call<TestTokenResponseDTO> call = authorizationAPI.testAuthentication();
-            call.enqueue(new Callback<>() {
-                @Override
-                public void onResponse(Call<TestTokenResponseDTO> call, Response<TestTokenResponseDTO> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        if (response.body().isAuthorized()) {
-                            startMainActivity();
-                        } else {
-                            tryAuthenticateWithRefreshToken();
-                        }
-                    } else {
-                        tryAuthenticateWithRefreshToken();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<TestTokenResponseDTO> call, Throwable t) {
-                    tryAuthenticateWithRefreshToken();
-                }
-            });
-        }, SPLASH_SCREEN_TIMEOUT);
+        new Handler(Looper.getMainLooper()).postDelayed(this::tryAuthenticateWithRefreshToken, SPLASH_SCREEN_TIMEOUT);
     }
 
     private void tryAuthenticateWithRefreshToken() {
