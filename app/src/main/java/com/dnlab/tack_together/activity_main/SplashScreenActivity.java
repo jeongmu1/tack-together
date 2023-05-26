@@ -61,7 +61,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         TokenManager tokenManager = new TokenManagerImpl(getApplicationContext());
         String refreshToken = tokenManager.getRefreshToken();
         if (refreshToken == null) {
-            startLoginActivity();
+            startAuthenticationActivity();
         }
 
         AuthorizationAPI authorizationAPI = RetrofitBuilder
@@ -81,13 +81,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                     tokenManager.storeRefreshToken(loginResponseDTO.getRefreshToken());
                     startMainActivity();
                 } else {
-                    startLoginActivity();
+                    startAuthenticationActivity();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponseDTO> call, Throwable t) {
-                startLoginActivity();
+                startAuthenticationActivity();
             }
         });
     }
@@ -98,8 +98,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         finish();
     }
 
-    private void startLoginActivity() {
+    private void startAuthenticationActivity() {
         Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
-        // 로그인 액티비티 넘어가기 예정
+        Intent intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
