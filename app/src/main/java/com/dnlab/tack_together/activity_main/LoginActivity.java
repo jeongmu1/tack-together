@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dnlab.tack_together.R;
 import com.dnlab.tack_together.api.dto.auth.LoginRequestDTO;
@@ -76,7 +77,10 @@ public class LoginActivity extends AppCompatActivity {
                         assert loginResponseDTO != null;
                         tokenManager.storeAccessToken(loginResponseDTO.getAccessToken());
                         tokenManager.storeRefreshToken(loginResponseDTO.getRefreshToken());
+
+                        Toast.makeText(getApplicationContext(), "로그인에 성공하였습니다!", Toast.LENGTH_SHORT).show();
                         startMainActivity();
+                        finish();
                     } else {
                         new AlertDialog.Builder(LoginActivity.this)
                                 .setMessage("로그인에 실패하였습니다.")
