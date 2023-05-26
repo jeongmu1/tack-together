@@ -33,6 +33,13 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         });
 
+        Button registerButton = findViewById(R.id.login_register_button);
+        registerButton.setOnClickListener(v -> {
+            Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(registerIntent);
+            finish();
+        });
+
         Button loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(v -> {
             EditText username = findViewById(R.id.login_username);
