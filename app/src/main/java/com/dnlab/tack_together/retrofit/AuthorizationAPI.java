@@ -2,6 +2,7 @@ package com.dnlab.tack_together.retrofit;
 
 import com.dnlab.tack_together.api.dto.auth.CheckUsernameResponseDTO;
 import com.dnlab.tack_together.api.dto.auth.LoginRequestDTO;
+import com.dnlab.tack_together.api.dto.auth.MemberInfoResponseDTO;
 import com.dnlab.tack_together.api.dto.auth.RefreshTokenRequestDTO;
 import com.dnlab.tack_together.api.dto.auth.RegistrationRequestDTO;
 import com.dnlab.tack_together.api.dto.auth.LoginResponseDTO;
@@ -29,4 +30,7 @@ public interface AuthorizationAPI {
 
     @GET("/api/auth/test-auth")
     Call<TestTokenResponseDTO> testAuthentication();
+
+    @GET("/api/auth/member-info")
+    Call<MemberInfoResponseDTO> getMemberInfo();
 }
