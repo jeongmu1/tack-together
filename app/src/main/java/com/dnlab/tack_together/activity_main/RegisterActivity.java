@@ -32,18 +32,18 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        username = findViewById(R.id.register_username);
-        password = findViewById(R.id.register_password);
-        name = findViewById(R.id.register_name);
-        nickname = findViewById(R.id.register_nickname);
+        username = findViewById(R.id.registerUsername);
+        password = findViewById(R.id.registerPassword);
+        name = findViewById(R.id.registerName);
+        nickname = findViewById(R.id.registerNickname);
 
-        Button cancelButton = findViewById(R.id.register_cancel_button);
+        Button cancelButton = findViewById(R.id.registerCancelButton);
         cancelButton.setOnClickListener(getCancelButtonOnClickListener());
 
-        Button checkDuplicationButton = findViewById(R.id.check_duplication_button);
+        Button checkDuplicationButton = findViewById(R.id.checkDuplicationButton);
         checkDuplicationButton.setOnClickListener(getCheckDuplicationUsernameButtonOnClickListener());
 
-        Button registerButton = findViewById(R.id.register_button);
+        Button registerButton = findViewById(R.id.registerButton);
         registerButton.setOnClickListener(getRegisterButtonOnClickListener());
     }
 

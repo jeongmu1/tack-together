@@ -16,8 +16,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 
-        loginButton = findViewById(R.id.auth_login_button);
-        registerButton = findViewById(R.id.auth_register_button);
+        loginButton = findViewById(R.id.authLoginButton);
+        registerButton = findViewById(R.id.authRegisterButton);
 
         loginButton.setOnClickListener(view -> {
             Intent intent = new Intent(AuthenticationActivity.this, LoginActivity.class);
