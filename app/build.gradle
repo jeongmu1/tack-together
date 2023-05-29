@@ -27,6 +27,7 @@ android {
         //manifestPlaceholders = [WEBSOCKET_URL : WEBSOCKET_URL]
         buildConfigField "String", "API_BASE_URL", properties['API_BASE_URL']
         buildConfigField "String", "WEBSOCKET_URL", properties['WEBSOCKET_URL']
+        buildConfigField "String", "BROADCAST_CONTENT", properties['BROADCAST_CONTENT']
     }
 
     buildTypes {
