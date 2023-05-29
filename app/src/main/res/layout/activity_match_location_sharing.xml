@@ -5,19 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity_match.MatchMatchedActivity">
+    tools:context=".activity_match.MatchLocationSharingActivity">
 
-        <com.naver.maps.map.MapView
-            android:id="@+id/matchedMapView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/matchedOpponentInfo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <com.naver.maps.map.MapView
+        android:id="@+id/locationSharingMapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/locationSharingOpponentInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
-        android:id="@+id/matchedTitleBarLayout"
+        android:id="@+id/locationSharingTitleBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lightYellowTransparent"
@@ -40,7 +40,7 @@
 
 
         <ImageButton
-            android:id="@+id/menuButton2"
+            android:id="@+id/menuButton3"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -51,7 +51,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/matchedOpponentInfo"
+        android:id="@+id/locationSharingOpponentInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -59,12 +59,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:text="매칭 상대 정보"/>
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:text="매칭 상대 정보"/>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,93 +91,73 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:layout_weight="1"
                 android:text="님"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical|end"
+                android:text="나와의 거리 : " />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="목적지 : "/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="감천로 0번길 0"/>
+                android:layout_gravity="right|center_vertical|end"
+                android:text="10m" />
 
         </LinearLayout>
 
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            >
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="나와의 거리 : "/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:textSize="18sp"
-                android:text="내 목적지 : " />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="10m"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:textSize="18sp"
-                android:layout_weight="1"
-                android:text="주례로 47 " />
+        <!--        </LinearLayout>-->
 
-<!--            <Button-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="10dp"-->
+<!--            android:gravity="right"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
 <!--                android:layout_width="wrap_content"-->
 <!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="right|center_vertical"-->
-<!--                android:text="목적지 검색" />-->
+<!--                android:textSize="15sp"-->
+<!--                android:text="예상 요금 : "/>-->
 
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="15sp"-->
+<!--                android:text="10000원"/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:gravity="right"
-            android:orientation="horizontal">
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="15sp"-->
+<!--                android:text=" | 나의 예상 요금 : "/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="예상 요금 : "/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="15sp"-->
+<!--                android:text="5000원"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="10000원"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text=" | 나의 예상 요금 : "/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="5000원"/>
-
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 
@@ -199,10 +179,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:text="매칭을 수락하시겠습니까?"
+            android:text="동승자와 만났다면 확인버튼을 눌러주세요"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold"/>
 
         <TextView
@@ -225,7 +205,7 @@
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="거절"
+                android:text="취소"
                 android:padding="20dp" />
 
             <Button
@@ -235,7 +215,7 @@
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="수락"
+                android:text="확인"
                 android:padding="20dp" />
 
         </LinearLayout>

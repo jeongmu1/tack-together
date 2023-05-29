@@ -27,24 +27,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button cancelButton = findViewById(R.id.login_cancel_button);
+        Button cancelButton = findViewById(R.id.loginCancelButton);
         cancelButton.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, AuthenticationActivity.class);
             startActivity(intent);
             finish();
         });
 
-        Button registerButton = findViewById(R.id.login_register_button);
+        Button registerButton = findViewById(R.id.loginRegisterButton);
         registerButton.setOnClickListener(v -> {
             Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(registerIntent);
             finish();
         });
 
-        Button loginButton = findViewById(R.id.login_button);
+        Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(v -> {
-            EditText username = findViewById(R.id.login_username);
-            EditText password = findViewById(R.id.login_password);
+            EditText username = findViewById(R.id.loginUsername);
+            EditText password = findViewById(R.id.loginPassword);
 
             // 아이디, 비밀번호 공백 체크
             if (username.length() < 1) {

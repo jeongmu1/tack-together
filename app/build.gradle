@@ -54,6 +54,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     // rest api 연동
     implementation 'com.squareup.retrofit2:retrofit:2.6.4'
@@ -76,5 +77,5 @@ dependencies {
     // 네이버 지도 SDK
     implementation 'com.naver.maps:map-sdk:3.16.2'
 
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
+
 }
