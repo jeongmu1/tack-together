@@ -28,6 +28,7 @@ android {
         buildConfigField "String", "API_BASE_URL", properties['API_BASE_URL']
         buildConfigField "String", "WEBSOCKET_URL", properties['WEBSOCKET_URL']
         buildConfigField "String", "BROADCAST_CONTENT", properties['BROADCAST_CONTENT']
+        buildConfigField "String", "BROADCAST_CONNECTED_CONTENT", properties['BROADCAST_CONNECTED_CONTENT']
     }
 
     buildTypes {

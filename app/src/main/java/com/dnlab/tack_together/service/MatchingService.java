@@ -14,9 +14,6 @@ import com.dnlab.tack_together.common.jwt.TokenManagerImpl;
 import com.dnlab.tack_together.retrofit.AuthorizationAPI;
 import com.dnlab.tack_together.retrofit.RetrofitBuilder;
 
-
-import java.io.IOException;
-
 import io.reactivex.disposables.Disposable;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,28 +24,20 @@ import ua.naiksoftware.stomp.StompClient;
 public class MatchingService extends Service {
 
     private static final String CONNECTION_URL = BuildConfig.WEBSOCKET_URL + "/match";
-    private StompClient stompClient;
+    private static StompClient stompClient;
     private TokenManager tokenManager;
     private MemberInfoResponseDTO memberInfoResponseDTO;
     private static final String TAG = "MatchingService";
     private Disposable disposable;
     private static final String CONTENT = BuildConfig.BROADCAST_CONTENT;
 
+    public static StompClient getStompClient() {
+        return stompClient;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        connect();
-
-        Call<MemberInfoResponseDTO> response = RetrofitBuilder.getInstance(getApplicationContext())
-                .getRetrofit()
-                .create(AuthorizationAPI.class)
-                .getMemberInfo();
-        try {
-            memberInfoResponseDTO = response.execute().body();
-        } catch (IOException e) {
-            Log.d(TAG, "통신 실패");
-            throw new RuntimeException(e);
-        }
 
         Call<MemberInfoResponseDTO> call = RetrofitBuilder.getInstance(getApplicationContext())
                 .getRetrofit()
@@ -59,7 +48,8 @@ public class MatchingService extends Service {
             @Override
             public void onResponse(Call<MemberInfoResponseDTO> call, Response<MemberInfoResponseDTO> response) {
                 if (response.isSuccessful()) {
-                    subscribeTopic();
+                    memberInfoResponseDTO = response.body();
+                    connect();
                 } else {
                     Log.e(TAG, "통신 실패");
                 }
@@ -86,13 +76,34 @@ public class MatchingService extends Service {
 
     private void connect() {
         tokenManager = new TokenManagerImpl(getApplicationContext());
-        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, CONNECTION_URL + "?token=" + tokenManager.getAccessToken());
+        String accessToken = tokenManager.getAccessToken();
+        Log.i(TAG, "연결 uri" + CONNECTION_URL + "?token=" + accessToken);
+        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, CONNECTION_URL + "?token=" + accessToken);
+        Disposable d = stompClient.lifecycle().subscribe(lifecycleEvent -> {
+            switch (lifecycleEvent.getType()) {
+                case OPENED:
+                    Log.d(TAG, "Stomp connection opened");
+                    subscribeTopic();
+                    Intent broadcastIntent = new Intent(BuildConfig.BROADCAST_CONNECTED_CONTENT);
+                    broadcastIntent.putExtra("connectionOpened", "OPENED");
+                    LocalBroadcastManager.getInstance(MatchingService.this).sendBroadcast(broadcastIntent);
+                    Log.d(TAG, "구독 방송 보냄");
+                    break;
+                case ERROR:
+                    Log.e(TAG, "Error", lifecycleEvent.getException());
+                    break;
+                case CLOSED:
+                    Log.d(TAG, "Stomp connection closed");
+                    break;
+            }
+        });
         stompClient.connect();
+        Log.d(TAG, "웹소켓 연결됨");
     }
 
     private void subscribeTopic() {
-        stompClient.topic("/user" + memberInfoResponseDTO.getUsername() + "/queue/match")
-                .subscribe(message -> sendBroadcast(message.compile()));
+        Disposable d = stompClient.topic("/user/" + memberInfoResponseDTO.getUsername() + "/queue/match")
+                .subscribe(message -> sendBroadcast(message.compile()), throwable -> Log.e(TAG, "구독 실패", throwable));
     }
 
     private void sendBroadcast(String payload) {
