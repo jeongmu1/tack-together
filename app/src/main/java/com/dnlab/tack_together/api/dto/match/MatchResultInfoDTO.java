@@ -9,8 +9,8 @@ import java.util.List;
 public class MatchResultInfoDTO implements Serializable {
     @SerializedName("username")
     private String username;
-    @SerializedName("opponentUsername")
-    private String opponentUsername;
+    @SerializedName("opponentNickname")
+    private String opponentNickname;
     @SerializedName("routes")
     private List<RouteDTO> routes;
     @SerializedName("estimatedTotalTaxiFare")
@@ -33,12 +33,12 @@ public class MatchResultInfoDTO implements Serializable {
         this.username = username;
     }
 
-    public String getOpponentUsername() {
-        return opponentUsername;
+    public String getOpponentNickname() {
+        return opponentNickname;
     }
 
-    public void setOpponentUsername(String opponentUsername) {
-        this.opponentUsername = opponentUsername;
+    public void setOpponentNickname(String opponentNickname) {
+        this.opponentNickname = opponentNickname;
     }
 
     public List<RouteDTO> getRoutes() {

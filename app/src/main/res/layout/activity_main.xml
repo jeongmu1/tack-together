@@ -37,7 +37,7 @@
 
     <!-- 큰 카드 버튼 1 -->
     <android.support.v7.widget.CardView
-        android:id="@+id/match_menu_button"
+        android:id="@+id/matchMenuButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="40dp"
@@ -89,7 +89,7 @@
 
     <!-- 큰 카드 버튼 2 -->
     <android.support.v7.widget.CardView
-        android:id="@+id/history_menubutton"
+        android:id="@+id/historyMenuButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
@@ -115,7 +115,7 @@
                 android:layout_height="59dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="#FFFFFF"
+                android:background="#00FFFFFF"
                 android:text="이용기록"
                 android:textColor="#000000"
                 android:textSize="40sp"
@@ -147,7 +147,7 @@
         android:orientation="horizontal">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/mypage_button"
+            android:id="@+id/mypageButton"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_weight="1"
@@ -163,7 +163,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/option_button"
+            android:id="@+id/optionButton"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_weight="1"
