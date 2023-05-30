@@ -12,26 +12,16 @@ import android.widget.Button;
 
 import com.dnlab.tack_together.BuildConfig;
 import com.dnlab.tack_together.R;
-import com.dnlab.tack_together.activity_main.MainActivity;
 import com.dnlab.tack_together.api.dto.match.MatchRequestDTO;
 import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
-import com.dnlab.tack_together.common.jwt.TokenManagerImpl;
 import com.dnlab.tack_together.service.MatchingService;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 import ua.naiksoftware.stomp.StompClient;
-import ua.naiksoftware.stomp.dto.StompCommand;
-import ua.naiksoftware.stomp.dto.StompHeader;
 import ua.naiksoftware.stomp.dto.StompMessage;
 
 public class MatchMatchingActivity extends AppCompatActivity {
 
-    private Button matchingCancelButton;
     private BroadcastReceiver messageReceiver;
     private MatchResultInfoDTO matchResultInfoDTO;
     private Intent matchingServiceIntent;
@@ -72,10 +62,8 @@ public class MatchMatchingActivity extends AppCompatActivity {
         }, new IntentFilter(BuildConfig.BROADCAST_CONNECTED_CONTENT));
 
 
-        matchingCancelButton = findViewById(R.id.matchingCancelButton);
+        Button matchingCancelButton = findViewById(R.id.matchingCancelButton);
         matchingCancelButton.setOnClickListener(v -> {
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
             stopService(matchingServiceIntent);
             finish();
         });
