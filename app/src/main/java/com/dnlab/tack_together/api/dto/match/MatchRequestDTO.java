@@ -7,6 +7,8 @@ import java.io.Serializable;
 public class MatchRequestDTO implements Serializable {
     @SerializedName("username")
     private String username;
+    @SerializedName("nickname")
+    private String nickname;
     @SerializedName("origin")
     private String origin;
     @SerializedName("destination")
@@ -19,8 +21,9 @@ public class MatchRequestDTO implements Serializable {
     public MatchRequestDTO() {
     }
 
-    public MatchRequestDTO(String username, String origin, String destination, short originRange, short destinationRange) {
+    public MatchRequestDTO(String username, String nickname, String origin, String destination, short originRange, short destinationRange) {
         this.username = username;
+        this.nickname = nickname;
         this.origin = origin;
         this.destination = destination;
         this.originRange = originRange;
