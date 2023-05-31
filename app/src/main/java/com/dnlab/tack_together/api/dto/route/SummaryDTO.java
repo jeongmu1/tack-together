@@ -2,9 +2,10 @@ package com.dnlab.tack_together.api.dto.route;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SummaryDTO {
+public class SummaryDTO implements Serializable {
     @SerializedName("origin")
     private LocationDTO origin;
     @SerializedName("destination")
