@@ -18,6 +18,7 @@ import io.reactivex.disposables.Disposable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.internal.EverythingIsNonNull;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
@@ -25,10 +26,10 @@ public class MatchingService extends Service {
 
     private static final String CONNECTION_URL = BuildConfig.WEBSOCKET_URL + "/match";
     private static StompClient stompClient;
-    private TokenManager tokenManager;
     private MemberInfoResponseDTO memberInfoResponseDTO;
     private static final String TAG = "MatchingService";
-    private Disposable disposable;
+    private static Disposable subscriptionDisposable;
+    private static Disposable connectionDisposable;
     private static final String CONTENT = BuildConfig.BROADCAST_CONTENT;
 
     public static StompClient getStompClient() {
@@ -44,8 +45,9 @@ public class MatchingService extends Service {
                 .create(AuthorizationAPI.class)
                 .getMemberInfo();
 
-        call.enqueue(new Callback<MemberInfoResponseDTO>() {
+        call.enqueue(new Callback<>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<MemberInfoResponseDTO> call, Response<MemberInfoResponseDTO> response) {
                 if (response.isSuccessful()) {
                     memberInfoResponseDTO = response.body();
@@ -56,6 +58,7 @@ public class MatchingService extends Service {
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<MemberInfoResponseDTO> call, Throwable t) {
                 Log.e(TAG, "연결 실패");
             }
@@ -74,12 +77,20 @@ public class MatchingService extends Service {
         stompClient.disconnect();
     }
 
+    public static Disposable getSubscriptionDisposable() {
+        return subscriptionDisposable;
+    }
+
+    public static Disposable getConnectionDisposable() {
+        return connectionDisposable;
+    }
+
     private void connect() {
-        tokenManager = new TokenManagerImpl(getApplicationContext());
+        TokenManager tokenManager = new TokenManagerImpl(getApplicationContext());
         String accessToken = tokenManager.getAccessToken();
         Log.i(TAG, "연결 uri" + CONNECTION_URL + "?token=" + accessToken);
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, CONNECTION_URL + "?token=" + accessToken);
-        Disposable d = stompClient.lifecycle().subscribe(lifecycleEvent -> {
+        connectionDisposable = stompClient.lifecycle().subscribe(lifecycleEvent -> {
             switch (lifecycleEvent.getType()) {
                 case OPENED:
                     Log.d(TAG, "Stomp connection opened");
@@ -102,8 +113,13 @@ public class MatchingService extends Service {
     }
 
     private void subscribeTopic() {
-        Disposable d = stompClient.topic("/user/" + memberInfoResponseDTO.getUsername() + "/queue/match")
-                .subscribe(message -> sendBroadcast(message.compile()), throwable -> Log.e(TAG, "구독 실패", throwable));
+        subscriptionDisposable = stompClient.topic("/user/" + memberInfoResponseDTO.getUsername() + "/queue/match")
+                .subscribe(message -> {
+                    Log.d(TAG, "subscription accept가 호출됨");
+                    Log.d(TAG, "컴파일 된 메시지:" + message.compile());
+                    Log.d(TAG, "payload: " + message.getPayload());
+                    sendBroadcast(message.getPayload());
+                }, throwable -> Log.e(TAG, "구독 실패", throwable));
     }
 
     private void sendBroadcast(String payload) {

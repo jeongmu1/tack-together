@@ -80,4 +80,18 @@ public class MatchResultInfoDTO implements Serializable {
     public void setOpponentPaymentRate(double opponentPaymentRate) {
         this.opponentPaymentRate = opponentPaymentRate;
     }
+
+    @Override
+    public String toString() {
+        return "MatchResultInfoDTO{" +
+                "username='" + username + '\'' +
+                ", opponentNickname='" + opponentNickname + '\'' +
+                ", routes=" + routes +
+                ", estimatedTotalTaxiFare=" + estimatedTotalTaxiFare +
+                ", estimatedTaxiFare=" + estimatedTaxiFare +
+                ", paymentRate=" + paymentRate +
+                ", opponentPaymentRate=" + opponentPaymentRate +
+                '}';
+    }
+
 }

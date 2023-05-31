@@ -29,6 +29,10 @@ android {
         buildConfigField "String", "WEBSOCKET_URL", properties['WEBSOCKET_URL']
         buildConfigField "String", "BROADCAST_CONTENT", properties['BROADCAST_CONTENT']
         buildConfigField "String", "BROADCAST_CONNECTED_CONTENT", properties['BROADCAST_CONNECTED_CONTENT']
+        buildConfigField "String", "NAVER_CLIENT_SECRET", properties['NAVER_CLIENT_SECRET']
+        buildConfigField "String", "GEOCODING_URL", properties['GEOCODING_URL']
+        buildConfigField "String", "REVERSE_GEOCODING_URL", properties['REVERSE_GEOCODING_URL']
+        buildConfigField "String", "NAVER_MAP_CLIENTID_STRING", properties['NAVER_MAP_CLIENTID_STRING']
     }
 
     buildTypes {
