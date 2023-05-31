@@ -90,7 +90,7 @@ public class MatchingService extends Service {
         String accessToken = tokenManager.getAccessToken();
         Log.i(TAG, "연결 uri" + CONNECTION_URL + "?token=" + accessToken);
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, CONNECTION_URL + "?token=" + accessToken);
-        connectionDisposable  = stompClient.lifecycle().subscribe(lifecycleEvent -> {
+        connectionDisposable = stompClient.lifecycle().subscribe(lifecycleEvent -> {
             switch (lifecycleEvent.getType()) {
                 case OPENED:
                     Log.d(TAG, "Stomp connection opened");
@@ -114,7 +114,12 @@ public class MatchingService extends Service {
 
     private void subscribeTopic() {
         subscriptionDisposable = stompClient.topic("/user/" + memberInfoResponseDTO.getUsername() + "/queue/match")
-                .subscribe(message -> sendBroadcast(message.compile()), throwable -> Log.e(TAG, "구독 실패", throwable));
+                .subscribe(message -> {
+                    Log.d(TAG, "subscription accept가 호출됨");
+                    Log.d(TAG, "컴파일 된 메시지:" + message.compile());
+                    Log.d(TAG, "payload: " + message.getPayload());
+                    sendBroadcast(message.getPayload());
+                }, throwable -> Log.e(TAG, "구독 실패", throwable));
     }
 
     private void sendBroadcast(String payload) {

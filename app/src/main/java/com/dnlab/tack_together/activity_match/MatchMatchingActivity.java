@@ -14,11 +14,11 @@ import com.dnlab.tack_together.BuildConfig;
 import com.dnlab.tack_together.R;
 import com.dnlab.tack_together.api.dto.match.MatchRequestDTO;
 import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
+import com.dnlab.tack_together.api.dto.wrapper.MatchResultInfoWrapperDTO;
 import com.dnlab.tack_together.service.MatchingService;
 import com.google.gson.Gson;
 
 import ua.naiksoftware.stomp.StompClient;
-import ua.naiksoftware.stomp.dto.StompMessage;
 
 public class MatchMatchingActivity extends AppCompatActivity {
 
@@ -40,12 +40,14 @@ public class MatchMatchingActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String serializedMessage = intent.getStringExtra("message");
-                StompMessage message = StompMessage.from(serializedMessage);
-                stompClient = MatchingService.getStompClient();
 
-                matchResultInfoDTO = new Gson().fromJson(message.getPayload(), MatchResultInfoDTO.class);
+                Log.d(TAG, "serializedMessage: " + serializedMessage);
+                matchResultInfoDTO = new Gson().fromJson(serializedMessage, MatchResultInfoWrapperDTO.class).getPayload();
+                Log.d(TAG, "matchResultInfoDTO: " + matchResultInfoDTO.toString());
                 Intent matchedIntent = new Intent(MatchMatchingActivity.this, MatchMatchedActivity.class);
                 matchedIntent.putExtra("matchResultInfo", matchResultInfoDTO);
+                startActivity(matchedIntent);
+                finish();
             }
         };
 
