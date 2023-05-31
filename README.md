@@ -1,6 +1,7 @@
 # Tack-Together
 
-<p align = left> <img width="150" alt="App Icon" src="https://user-images.githubusercontent.com/101302590/232203145-b179c27f-2062-45ba-a31c-7bb807d50807.png" /> </p>
+<!--<p align = left> <img width="150" alt="App Icon" src="https://user-images.githubusercontent.com/101302590/232203145-b179c27f-2062-45ba-a31c-7bb807d50807.png" /> </p>-->
+<p align = left> <img width="150" alt="App Icon" src="/app/src/main/res/drawable/logotransparent.png" /> </p>
 
 ### 이 프로젝트는 택시 동승자 매칭을 위한 안드로이드 어플리케이션 "택 투게더"입니다.
 
