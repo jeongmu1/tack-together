@@ -11,6 +11,8 @@
         android:id="@+id/locationSharingMapView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:navermap_locationButtonEnabled="true"
+        app:navermap_tiltGesturesEnabled="false"
         app:layout_constraintBottom_toTopOf="@+id/locationSharingOpponentInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

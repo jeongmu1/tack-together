@@ -22,6 +22,7 @@ import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.LocationOverlay;
 
 public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -29,6 +30,7 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     private LocationRequest locationRequest;
     private NaverMap naverMap;
     private MapView mapView;
+    private LocationOverlay locationOverlay;
 
     private Button matchFindButton;
 
@@ -57,6 +59,7 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
                     LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                     CameraUpdate cameraUpdate = CameraUpdate.scrollTo(currentLatLng);
                     naverMap.moveCamera(cameraUpdate);
+                    locationOverlay.setPosition(currentLatLng);
                 }
             }
         };
@@ -74,6 +77,8 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
+        locationOverlay = naverMap.getLocationOverlay();
+        locationOverlay.setVisible(true);
     }
 
     @Override
