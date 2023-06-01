@@ -80,6 +80,7 @@
                 app:srcCompat="@drawable/ic_icon_round" />
 
             <TextView
+                android:id="@+id/matchedOpponentNickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
@@ -108,10 +109,11 @@
                 android:text="목적지 : "/>
 
             <TextView
+                android:id="@+id/matchedOpponentDestination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="감천로 0번길 0"/>
+                android:text=""/>
 
         </LinearLayout>
 
@@ -131,12 +133,13 @@
                 android:text="내 목적지 : " />
 
             <TextView
+                android:id="@+id/matchedMyDestination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:textSize="18sp"
                 android:layout_weight="1"
-                android:text="주례로 47 " />
+                android:text="" />
 
 <!--            <Button-->
 <!--                android:layout_width="wrap_content"-->
@@ -160,10 +163,11 @@
                 android:text="예상 요금 : "/>
 
             <TextView
+                android:id="@+id/matchedEstimatedTotalFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:text="10000원"/>
+                android:text="원"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -172,10 +176,11 @@
                 android:text=" | 나의 예상 요금 : "/>
 
             <TextView
+                android:id="@+id/matchedEstimatedFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:text="5000원"/>
+                android:text="원"/>
 
         </LinearLayout>
 
@@ -219,7 +224,7 @@
             android:padding="10dp">
 
             <Button
-                android:id="@+id/locationSharingCancelButton"
+                android:id="@+id/matchedRejectButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -229,7 +234,7 @@
                 android:padding="20dp" />
 
             <Button
-                android:id="@+id/locationSharingAcceptButton"
+                android:id="@+id/matchedAcceptButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

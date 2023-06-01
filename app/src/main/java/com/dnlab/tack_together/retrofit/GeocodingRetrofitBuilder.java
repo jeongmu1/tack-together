@@ -26,7 +26,7 @@ public class GeocodingRetrofitBuilder {
                 .build();
 
         this.retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.API_BASE_URL)
+                .baseUrl(BuildConfig.GEOCODING_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

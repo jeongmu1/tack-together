@@ -7,6 +7,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ReverseGeocodingAPI {
-    @GET
+    @GET("v2/gc?output=json&")
     Call<ReverseGeocodingResponseDTO> requestReverseGeocoding(@Query("coords") String coords);
+
+    @GET("v2/gc?output=json&")
+    Call<ReverseGeocodingResponseDTO> requestReverseGeocoding(@Query("coords") String coords,
+                                                              @Query("orders") String orders);
 }

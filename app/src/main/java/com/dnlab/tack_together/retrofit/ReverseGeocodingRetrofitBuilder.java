@@ -15,26 +15,26 @@ public class ReverseGeocodingRetrofitBuilder {
     private final Retrofit retrofit;
     private static final String TAG = "ReverseGeocodingRetrofitBuilder";
 
-    private ReverseGeocodingRetrofitBuilder(Context context) {
+    private ReverseGeocodingRetrofitBuilder() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new NaverAPIInterceptor())
+                .addInterceptor(new KakaoAPIInterceptor())
                 .addInterceptor(interceptor)
                 .build();
 
         this.retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.API_BASE_URL)
+                .baseUrl(BuildConfig.KAKAO_GEOCODING_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
     }
 
-    public synchronized static ReverseGeocodingRetrofitBuilder getInstance(Context context) {
+    public synchronized static ReverseGeocodingRetrofitBuilder getInstance() {
         Log.i(TAG, "getInstance: 호출되었습니다.");
         if (instance == null) {
-            instance = new ReverseGeocodingRetrofitBuilder(context);
+            instance = new ReverseGeocodingRetrofitBuilder();
         }
         return instance;
     }
