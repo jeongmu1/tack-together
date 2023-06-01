@@ -1,21 +1,32 @@
 package com.dnlab.tack_together.activity_match;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dnlab.tack_together.BuildConfig;
 import com.dnlab.tack_together.R;
+import com.dnlab.tack_together.api.dto.common.MatchDecisionStatus;
 import com.dnlab.tack_together.api.dto.match.MatchRequestDTO;
+import com.dnlab.tack_together.api.dto.match.MatchResponseDTO;
 import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
 import com.dnlab.tack_together.api.dto.reversegeo.DocumentDTO;
 import com.dnlab.tack_together.api.dto.reversegeo.KakaoReverseGeocodingResponseDTO;
 import com.dnlab.tack_together.api.dto.reversegeo.RoadAddressDTO;
 import com.dnlab.tack_together.api.dto.route.LocationDTO;
+import com.dnlab.tack_together.api.dto.wrapper.MatchResponseWrapperDTO;
 import com.dnlab.tack_together.retrofit.KakaoReverseGeocodingAPI;
 import com.dnlab.tack_together.retrofit.ReverseGeocodingRetrofitBuilder;
 import com.dnlab.tack_together.service.MatchingService;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +39,8 @@ public class MatchMatchedActivity extends AppCompatActivity {
     private MatchResultInfoDTO matchResultInfoDTO;
     private static final String TAG = "MatchMatchedActivity";
     private StompClient stompClient;
+    private MatchResponseDTO matchResponseDTO;
+    private BroadcastReceiver messageReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +61,39 @@ public class MatchMatchedActivity extends AppCompatActivity {
 
         Button acceptButton = findViewById(R.id.matchedAcceptButton);
         acceptButton.setOnClickListener(view -> stompClient.send("/app/match/accept").subscribe());
+
+        messageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = intent.getStringExtra("message");
+                matchResponseDTO = new Gson().fromJson(message, MatchResponseWrapperDTO.class).getMatchResponseDTO();
+
+                if (matchResponseDTO.getMatchDecisionStatus().equals(MatchDecisionStatus.REJECTED)) {
+                    new AlertDialog.Builder(MatchMatchedActivity.this)
+                            .setMessage("매칭이 거절되었습니다.")
+                            .setPositiveButton("확인", (dialog, which) -> resumeMatchingActivity())
+                            .setOnDismissListener(dialog -> resumeMatchingActivity())
+                            .create()
+                            .show();
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, new IntentFilter(BuildConfig.BROADCAST_CONTENT));
+    }
+
+    private void resumeMatchingActivity() {
+        finish();
     }
 
     private void setMemberDestinationText() {
@@ -61,6 +107,7 @@ public class MatchMatchedActivity extends AppCompatActivity {
                 .requestReverseGeocoding(destination[0], destination[1]);
         call.enqueue(new Callback<>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<KakaoReverseGeocodingResponseDTO> call, Response<KakaoReverseGeocodingResponseDTO> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
