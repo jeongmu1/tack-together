@@ -28,11 +28,13 @@ public class MatchMatchingActivity extends AppCompatActivity {
     private StompClient stompClient;
     private static final String TAG = "MatchMatchingActivity";
     private MatchRequestDTO matchRequestDTO;
+    private static MatchMatchingActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_matching);
+        instance = this;
 
         matchingServiceIntent = new Intent(getApplicationContext(), MatchingService.class);
         startService(matchingServiceIntent);
@@ -70,6 +72,12 @@ public class MatchMatchingActivity extends AppCompatActivity {
             stopService(matchingServiceIntent);
             finish();
         });
+    }
+
+    public static void finishActivity() {
+        if (instance != null) {
+            instance.finish();
+        }
     }
 
     @Override
