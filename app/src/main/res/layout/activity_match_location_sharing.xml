@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/locationSharingButtonLayout"
+        app:layout_constraintBottom_toTopOf="@+id/matchedLocationSharingButtonLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -164,7 +164,7 @@
 
     <!-- '매칭 수락/거절' 버튼 -->
     <LinearLayout
-        android:id="@+id/locationSharingButtonLayout"
+        android:id="@+id/matchedLocationSharingButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="30dp"

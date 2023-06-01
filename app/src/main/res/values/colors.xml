@@ -15,4 +15,6 @@
     <color name="lightYellowTransparent">#90FFF042</color>
     <color name="lightGray">#E6E6E6</color>
     <color name="buttonBlue">#5FFFFF</color>
+    <color name="red">#FF3333</color>
+    <color name="green">#006600</color>
 </resources>

@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity_match.MatchMatchedActivity">
 
-        <com.naver.maps.map.MapView
-            android:id="@+id/matchedMapView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/matchedOpponentInfo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <com.naver.maps.map.MapView
+        android:id="@+id/matchedMapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/matchedOpponentInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/matchedTitleBarLayout"
@@ -55,22 +54,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/locationSharingButtonLayout"
+        app:layout_constraintBottom_toTopOf="@+id/matchedLocationSharingButtonLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:text="매칭 상대 정보"/>
+            android:layout_marginTop="10dp"
+            android:text="매칭 상대 정보" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
 
             <ImageView
@@ -83,37 +82,46 @@
                 android:id="@+id/matchedOpponentNickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text=""
                 android:textSize="30sp"
-                android:textStyle="bold"
-                android:text="홍길동"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="님"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:text="님"/>
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/matchedOpponentStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20sp"
+                android:text="대기중 ..."
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="목적지 : "/>
+                android:text="목적지 : "
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/matchedOpponentDestination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text=""/>
+                android:text=""
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -122,83 +130,118 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:textSize="18sp"
-                android:text="내 목적지 : " />
+                android:text="내 목적지 : "
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/matchedMyDestination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:textSize="18sp"
                 android:layout_weight="1"
-                android:text="" />
+                android:text=""
+                android:textSize="18sp" />
 
-<!--            <Button-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="right|center_vertical"-->
-<!--                android:text="목적지 검색" />-->
+            <!--            <Button-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="right|center_vertical"-->
+            <!--                android:text="목적지 검색" />-->
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:gravity="right"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="예상 요금 : "/>
+                android:text="예상 요금 : "
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/matchedEstimatedTotalFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="원"/>
+                android:text="원"
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text=" | 나의 예상 요금 : "/>
+                android:text=" | 나의 예상 요금 : "
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/matchedEstimatedFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:text="원"/>
+                android:text="원"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
 
-    <!-- '매칭 수락/거절' 버튼 -->
     <LinearLayout
-        android:id="@+id/locationSharingButtonLayout"
+        android:id="@+id/matchedWaitingLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:orientation="vertical"
         android:paddingTop="30dp"
         android:paddingBottom="30dp"
-        android:orientation="vertical"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/lightGray">
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="대기중 ..."
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:paddingTop="40sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="매칭 이후 취소시 불이익이 있을 수 있습니다."
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:paddingBottom="40sp"/>
+    </LinearLayout>
+
+
+    <!-- '매칭 수락/거절' 버튼 -->
+    <LinearLayout
+        android:id="@+id/matchedLocationSharingButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:layout_width="match_parent"
@@ -208,7 +251,7 @@
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="25sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -216,7 +259,7 @@
             android:layout_marginBottom="15dp"
             android:text="매칭 이후 취소시 불이익이 있을 수 있습니다."
             android:textAlignment="center"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -227,27 +270,26 @@
                 android:id="@+id/matchedRejectButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="거절"
-                android:padding="20dp" />
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:text="거절" />
 
             <Button
                 android:id="@+id/matchedAcceptButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="수락"
-                android:padding="20dp" />
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:text="수락" />
 
         </LinearLayout>
 
 
     </LinearLayout>
-
 
 
 </android.support.constraint.ConstraintLayout>
