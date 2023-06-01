@@ -22,12 +22,12 @@ import retrofit2.internal.EverythingIsNonNull;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
-public class MatchingService extends Service {
+public class MatchedService extends Service {
 
     private static final String CONNECTION_URL = BuildConfig.WEBSOCKET_URL + "/match";
     private static StompClient stompClient;
     private MemberInfoResponseDTO memberInfoResponseDTO;
-    private static final String TAG = "MatchingService";
+    private static final String TAG = "MatchedService";
     private static Disposable subscriptionDisposable;
     private static Disposable connectionDisposable;
     private static final String CONTENT = BuildConfig.BROADCAST_CONTENT;
@@ -103,7 +103,7 @@ public class MatchingService extends Service {
                     subscribeTopic();
                     Intent broadcastIntent = new Intent(BuildConfig.BROADCAST_CONNECTED_CONTENT);
                     broadcastIntent.putExtra("connectionOpened", "OPENED");
-                    LocalBroadcastManager.getInstance(MatchingService.this).sendBroadcast(broadcastIntent);
+                    LocalBroadcastManager.getInstance(MatchedService.this).sendBroadcast(broadcastIntent);
                     Log.d(TAG, "구독 방송 보냄");
                     break;
                 case ERROR:
@@ -119,7 +119,7 @@ public class MatchingService extends Service {
     }
 
     private void subscribeTopic() {
-        subscriptionDisposable = stompClient.topic("/user/" + memberInfoResponseDTO.getUsername() + "/queue/match")
+        subscriptionDisposable = stompClient.topic("/user/" + memberInfoResponseDTO.getUsername() + "/queue/matched")
                 .subscribe(message -> {
                     Log.d(TAG, "subscription accept가 호출됨");
                     Log.d(TAG, "컴파일 된 메시지:" + message.compile());
@@ -131,6 +131,6 @@ public class MatchingService extends Service {
     private void sendBroadcast(String payload) {
         Intent intent = new Intent(CONTENT);
         intent.putExtra("message", payload);
-        LocalBroadcastManager.getInstance(MatchingService.this).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(MatchedService.this).sendBroadcast(intent);
     }
 }

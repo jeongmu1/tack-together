@@ -49,7 +49,6 @@ public class MatchMatchingActivity extends AppCompatActivity {
                 matchedIntent.putExtra("matchResultInfo", matchResultInfoDTO);
                 matchedIntent.putExtra("matchRequest", matchRequestDTO);
                 startActivity(matchedIntent);
-                finish();
             }
         };
 
