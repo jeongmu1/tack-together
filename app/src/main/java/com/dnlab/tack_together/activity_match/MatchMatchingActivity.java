@@ -27,6 +27,7 @@ public class MatchMatchingActivity extends AppCompatActivity {
     private Intent matchingServiceIntent;
     private StompClient stompClient;
     private static final String TAG = "MatchMatchingActivity";
+    private MatchRequestDTO matchRequestDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class MatchMatchingActivity extends AppCompatActivity {
                 Log.d(TAG, "matchResultInfoDTO: " + matchResultInfoDTO.toString());
                 Intent matchedIntent = new Intent(MatchMatchingActivity.this, MatchMatchedActivity.class);
                 matchedIntent.putExtra("matchResultInfo", matchResultInfoDTO);
+                matchedIntent.putExtra("matchRequest", matchRequestDTO);
                 startActivity(matchedIntent);
                 finish();
             }
@@ -54,7 +56,7 @@ public class MatchMatchingActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                MatchRequestDTO matchRequestDTO = (MatchRequestDTO) getIntent().getSerializableExtra("requestInfo");
+                matchRequestDTO = (MatchRequestDTO) getIntent().getSerializableExtra("requestInfo");
                 String payload = new Gson().toJson(matchRequestDTO);
                 Log.d(TAG, "payload: " + payload);
                 stompClient = MatchingService.getStompClient();

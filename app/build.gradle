@@ -33,6 +33,8 @@ android {
         buildConfigField "String", "GEOCODING_URL", properties['GEOCODING_URL']
         buildConfigField "String", "REVERSE_GEOCODING_URL", properties['REVERSE_GEOCODING_URL']
         buildConfigField "String", "NAVER_MAP_CLIENTID_STRING", properties['NAVER_MAP_CLIENTID_STRING']
+        buildConfigField "String", "KAKAO_KEY", properties['KAKAO_KEY']
+        buildConfigField "String", "KAKAO_GEOCODING_URL", properties['KAKAO_GEOCODING_URL']
     }
 
     buildTypes {
