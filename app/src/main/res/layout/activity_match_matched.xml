@@ -224,7 +224,7 @@
             android:padding="10dp">
 
             <Button
-                android:id="@+id/locationSharingCancelButton"
+                android:id="@+id/matchedRejectButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -234,7 +234,7 @@
                 android:padding="20dp" />
 
             <Button
-                android:id="@+id/locationSharingAcceptButton"
+                android:id="@+id/matchedAcceptButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

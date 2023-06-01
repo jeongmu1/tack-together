@@ -3,6 +3,7 @@ package com.dnlab.tack_together.activity_match;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.dnlab.tack_together.R;
@@ -14,33 +15,43 @@ import com.dnlab.tack_together.api.dto.reversegeo.RoadAddressDTO;
 import com.dnlab.tack_together.api.dto.route.LocationDTO;
 import com.dnlab.tack_together.retrofit.KakaoReverseGeocodingAPI;
 import com.dnlab.tack_together.retrofit.ReverseGeocodingRetrofitBuilder;
+import com.dnlab.tack_together.service.MatchingService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.internal.EverythingIsNonNull;
+import ua.naiksoftware.stomp.StompClient;
 
 public class MatchMatchedActivity extends AppCompatActivity {
 
     private MatchResultInfoDTO matchResultInfoDTO;
-    private MatchRequestDTO matchRequestDTO;
     private static final String TAG = "MatchMatchedActivity";
+    private StompClient stompClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_matched);
 
+        stompClient = MatchingService.getStompClient();
         matchResultInfoDTO = (MatchResultInfoDTO) getIntent().getSerializableExtra("matchResultInfo");
         Log.d(TAG, "matchResultInfoDTO" + matchResultInfoDTO.toString());
 
         setDestinationText();
         setMemberDestinationText();
         setTaxiFareText();
+
+
+        Button rejectButton = findViewById(R.id.matchedRejectButton);
+        rejectButton.setOnClickListener(view -> stompClient.send("/app/match/reject").subscribe());
+
+        Button acceptButton = findViewById(R.id.matchedAcceptButton);
+        acceptButton.setOnClickListener(view -> stompClient.send("/app/match/accept").subscribe());
     }
 
     private void setMemberDestinationText() {
-        matchRequestDTO = (MatchRequestDTO) getIntent().getSerializableExtra("matchRequest");
+        MatchRequestDTO matchRequestDTO = (MatchRequestDTO) getIntent().getSerializableExtra("matchRequest");
         Log.d(TAG, "myDestination:" + matchRequestDTO.getDestination());
         String[] destination = matchRequestDTO.getDestination().split(",");
 
