@@ -48,6 +48,7 @@ public class MatchMatchedActivity extends AppCompatActivity {
     private TextView opponentStatus;
     private boolean accepted = false;
     private boolean opponentAccepted = false;
+    private String sessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,8 @@ public class MatchMatchedActivity extends AppCompatActivity {
                     opponentStatus.setText(MatchingStatus.ACCEPTED);
                     opponentAccepted = true;
 
+                    sessionId = matchResponseDTO.getMatchSessionId();
+
                     checkAllAccepted();
                 }
             }
@@ -124,7 +127,11 @@ public class MatchMatchedActivity extends AppCompatActivity {
 
     private void startLocationSharingActivity() {
         Intent sharingIntent = new Intent(MatchMatchedActivity.this, MatchLocationSharingActivity.class);
+        sharingIntent.putExtra("sessionId", sessionId);
         startActivity(sharingIntent);
+
+        Intent matchingServiceIntent = new Intent(getApplicationContext(), MatchingService.class);
+        stopService(matchingServiceIntent);
         finish();
     }
 
