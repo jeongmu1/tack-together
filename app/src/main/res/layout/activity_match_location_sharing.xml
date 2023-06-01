@@ -82,11 +82,12 @@
                 app:srcCompat="@drawable/ic_icon_round" />
 
             <TextView
+                android:id="@+id/sharingOpponentNickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:text="홍길동"/>
+                android:text="      "/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,10 +104,16 @@
                 android:text="나와의 거리 : " />
 
             <TextView
+                android:id="@+id/sharingDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical|end"
-                android:text="10m" />
+                android:text="1000" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical|end"
+                android:text="m" />
 
         </LinearLayout>
 

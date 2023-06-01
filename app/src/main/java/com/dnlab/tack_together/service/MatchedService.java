@@ -39,6 +39,7 @@ public class MatchedService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG, "onCreate() 호출됨");
 
         Call<MemberInfoResponseDTO> call = RetrofitBuilder.getInstance(getApplicationContext())
                 .getRetrofit()
@@ -49,6 +50,7 @@ public class MatchedService extends Service {
             @Override
             @EverythingIsNonNull
             public void onResponse(Call<MemberInfoResponseDTO> call, Response<MemberInfoResponseDTO> response) {
+                Log.d(TAG, "Callback 호출됨");
                 if (response.isSuccessful()) {
                     memberInfoResponseDTO = response.body();
                     connect();

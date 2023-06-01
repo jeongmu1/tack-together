@@ -58,6 +58,8 @@
         <service
             android:name=".service.MatchingService"
             android:enabled="true" />
+        <service android:name=".service.MatchedService"
+            android:enabled="true" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

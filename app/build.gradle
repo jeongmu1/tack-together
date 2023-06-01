@@ -85,5 +85,6 @@ dependencies {
     // 네이버 지도 SDK
     implementation 'com.naver.maps:map-sdk:3.16.2'
 
-
+    // 좌표 거리 계산 라이브러리
+    implementation 'org.gavaghan:geodesy:1.1.3'
 }
