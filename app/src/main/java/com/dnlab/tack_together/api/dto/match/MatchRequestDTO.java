@@ -18,6 +18,18 @@ public class MatchRequestDTO implements Serializable {
     @SerializedName("destinationRange")
     private short destinationRange;
 
+    @Override
+    public String toString() {
+        return "MatchRequestDTO{" +
+                "username='" + username + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", origin='" + origin + '\'' +
+                ", destination='" + destination + '\'' +
+                ", originRange=" + originRange +
+                ", destinationRange=" + destinationRange +
+                '}';
+    }
+
     public MatchRequestDTO() {
     }
 
@@ -28,6 +40,14 @@ public class MatchRequestDTO implements Serializable {
         this.destination = destination;
         this.originRange = originRange;
         this.destinationRange = destinationRange;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getUsername() {
