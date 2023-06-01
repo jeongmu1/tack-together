@@ -23,6 +23,10 @@ public class TokenInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request originalRequest = chain.request();
+        if (!originalRequest.url().toString().contains("ec2-3-39-105-45.ap-northeast-2.compute.amazonaws.com:8082")) {
+            Log.d(TAG, "본 서버 요청이 아님");
+            return chain.proceed(originalRequest);
+        }
 
         String accessToken = tokenManager.getAccessToken();
         if (accessToken == null) {

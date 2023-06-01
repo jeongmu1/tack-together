@@ -5,21 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity_match.MatchLocationSharingActivity">
+    tools:context=".activity_match.MatchRidingActivity">
 
     <com.naver.maps.map.MapView
-        android:id="@+id/locationSharingMapView"
+        android:id="@+id/ridingMapView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:navermap_locationButtonEnabled="true"
         app:navermap_tiltGesturesEnabled="false"
-        app:layout_constraintBottom_toTopOf="@+id/locationSharingOpponentInfo"
+        app:layout_constraintBottom_toTopOf="@+id/ridingOpponentInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
-        android:id="@+id/locationSharingTitleBarLayout"
+        android:id="@+id/ridingTitleBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lightYellowTransparent"
@@ -35,14 +35,14 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_weight="1"
-            android:text="매칭정보"
+            android:text="동승중"
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="bold" />
 
 
         <ImageButton
-            android:id="@+id/menuButton3"
+            android:id="@+id/menuButton4"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -53,20 +53,20 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/locationSharingOpponentInfo"
+        android:id="@+id/ridingOpponentInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/matchedLocationSharingButtonLayout"
+        app:layout_constraintBottom_toTopOf="@+id/ridingButtonLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginLeft="10dp"-->
-<!--            android:text="매칭 상대 정보"/>-->
+        <!--        <TextView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:text="매칭 상대 정보"/>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,12 +82,11 @@
                 app:srcCompat="@drawable/ic_icon_round" />
 
             <TextView
-                android:id="@+id/sharingOpponentNickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:text="      "/>
+                android:text="홍길동"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -101,19 +100,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical|end"
-                android:text="나와의 거리 : " />
+                android:text="동승중...|하차함 바뀜" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
-                android:id="@+id/sharingDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical|end"
-                android:text="1000" />
+                android:text="예상 요금 : "
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/ridingEstimatedTotalFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원"
+                android:textSize="15sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical|end"
-                android:text="m" />
+                android:text=" | 나의 예상 요금 : "
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/ridingEstimatedFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -122,58 +146,58 @@
         <!--            android:layout_height="wrap_content"-->
         <!--            android:orientation="horizontal">-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="나와의 거리 : "/>-->
+        <!--                    <TextView-->
+        <!--                        android:layout_width="wrap_content"-->
+        <!--                        android:layout_height="wrap_content"-->
+        <!--                        android:text="나와의 거리 : "/>-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="10m"/>-->
+        <!--                    <TextView-->
+        <!--                        android:layout_width="wrap_content"-->
+        <!--                        android:layout_height="wrap_content"-->
+        <!--                        android:text="10m"/>-->
 
         <!--        </LinearLayout>-->
 
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="10dp"-->
-<!--            android:gravity="right"-->
-<!--            android:orientation="horizontal">-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:gravity="right"-->
+        <!--            android:orientation="horizontal">-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="15sp"-->
-<!--                android:text="예상 요금 : "/>-->
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:textSize="15sp"-->
+        <!--                android:text="예상 요금 : "/>-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="15sp"-->
-<!--                android:text="10000원"/>-->
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:textSize="15sp"-->
+        <!--                android:text="10000원"/>-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="15sp"-->
-<!--                android:text=" | 나의 예상 요금 : "/>-->
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:textSize="15sp"-->
+        <!--                android:text=" | 나의 예상 요금 : "/>-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="15sp"-->
-<!--                android:text="5000원"/>-->
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:textSize="15sp"-->
+        <!--                android:text="5000원"/>-->
 
-<!--        </LinearLayout>-->
+        <!--        </LinearLayout>-->
 
     </LinearLayout>
 
 
     <!-- '매칭 수락/거절' 버튼 -->
     <LinearLayout
-        android:id="@+id/matchedLocationSharingButtonLayout"
+        android:id="@+id/ridingButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="30dp"
@@ -188,17 +212,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:text="동승자와 만났다면 확인버튼을 눌러주세요"
+            android:text="동승중 입니다."
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:text="매칭 이후 취소시 불이익이 있을 수 있습니다."
+            android:text="동승이 완료되면 정산하기 버튼을 눌러주세요"
             android:textAlignment="center"
             android:textSize="15sp"/>
 
@@ -208,23 +232,13 @@
             android:padding="10dp">
 
             <Button
-                android:id="@+id/locationSharingCancelButton"
+                android:id="@+id/ridingEndButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="취소"
-                android:padding="20dp" />
-
-            <Button
-                android:id="@+id/locationSharingAcceptButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="확인"
+                android:text="정산하기"
                 android:padding="20dp" />
 
         </LinearLayout>

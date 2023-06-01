@@ -29,6 +29,12 @@ android {
         buildConfigField "String", "WEBSOCKET_URL", properties['WEBSOCKET_URL']
         buildConfigField "String", "BROADCAST_CONTENT", properties['BROADCAST_CONTENT']
         buildConfigField "String", "BROADCAST_CONNECTED_CONTENT", properties['BROADCAST_CONNECTED_CONTENT']
+        buildConfigField "String", "NAVER_CLIENT_SECRET", properties['NAVER_CLIENT_SECRET']
+        buildConfigField "String", "GEOCODING_URL", properties['GEOCODING_URL']
+        buildConfigField "String", "REVERSE_GEOCODING_URL", properties['REVERSE_GEOCODING_URL']
+        buildConfigField "String", "NAVER_MAP_CLIENTID_STRING", properties['NAVER_MAP_CLIENTID_STRING']
+        buildConfigField "String", "KAKAO_KEY", properties['KAKAO_KEY']
+        buildConfigField "String", "KAKAO_GEOCODING_URL", properties['KAKAO_GEOCODING_URL']
     }
 
     buildTypes {
@@ -79,5 +85,6 @@ dependencies {
     // 네이버 지도 SDK
     implementation 'com.naver.maps:map-sdk:3.16.2'
 
-
+    // 좌표 거리 계산 라이브러리
+    implementation 'org.gavaghan:geodesy:1.1.3'
 }

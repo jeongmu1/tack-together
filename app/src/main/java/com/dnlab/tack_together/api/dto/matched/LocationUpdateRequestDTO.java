@@ -12,6 +12,15 @@ public class LocationUpdateRequestDTO implements Serializable {
     @SerializedName("sessionId")
     private String sessionId;
 
+    @Override
+    public String toString() {
+        return "LocationUpdateRequestDTO{" +
+                "location='" + location + '\'' +
+                ", departureAgreed=" + departureAgreed +
+                ", sessionId='" + sessionId + '\'' +
+                '}';
+    }
+
     public LocationUpdateRequestDTO() {
     }
 
