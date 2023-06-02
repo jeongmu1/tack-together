@@ -21,11 +21,23 @@ import com.dnlab.tack_together.api.dto.matched.LocationUpdateRequestDTO;
 import com.dnlab.tack_together.api.dto.wrapper.LocationInfoWrapperDTO;
 import com.dnlab.tack_together.service.MatchedService;
 import com.google.gson.Gson;
+import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
+import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.LocationOverlay;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
+
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GeodeticMeasurement;
+import org.gavaghan.geodesy.GlobalPosition;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 import ua.naiksoftware.stomp.StompClient;
 
@@ -38,15 +50,19 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
     private BroadcastReceiver connectedBroadcastReceiver;
     private BroadcastReceiver messageReceiver;
     private String sessionId;
-    private LocationOverlay locationOverlay;
     private boolean departureAgreed = false;
     private LocationInfoResponseDTO opponentLocationInfo;
-    private Intent matchedServiceIntent;
+    private Marker opponentMarker;
+    private TextView distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_location_sharing);
+
+        MapView mapView = findViewById(R.id.locationSharingMapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
 
         // 웹소켓 연결 관련
         startMatchedService();
@@ -56,6 +72,7 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
         // 위치 공유 관련
         sessionId = getIntent().getStringExtra("sessionId");
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+        distance = findViewById(R.id.sharingDistance);
 
         setOpponentNicknameText();
 
@@ -86,7 +103,7 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
         naverMap.setLocationSource(locationSource);
-        locationOverlay = naverMap.getLocationOverlay();
+        LocationOverlay locationOverlay = naverMap.getLocationOverlay();
         locationOverlay.setVisible(true);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
         naverMap.addOnLocationChangeListener(this::updateLocation);
@@ -107,7 +124,8 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
     }
 
     private void updateLocation(Location location) {
-        if (location != null) {
+        Log.d(TAG, "updateLocation()이 호출됨");
+        if (location != null && stompClient != null) {
             LocationUpdateRequestDTO locationUpdateRequestDTO = new LocationUpdateRequestDTO();
             locationUpdateRequestDTO.setLocation(location.getLongitude() + "," + location.getLatitude());
             locationUpdateRequestDTO.setSessionId(sessionId);
@@ -115,6 +133,12 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
 
             String payload = new Gson().toJson(locationUpdateRequestDTO);
             stompClient.send("/app/matched/share-location", payload).subscribe();
+        }
+
+        Optional<LocationInfoResponseDTO> lastInfo = Optional.ofNullable(opponentLocationInfo);
+        if (location != null) {
+            lastInfo.ifPresent(action -> distance.setText(String.valueOf(calculateDistance(new LatLng(location.getLatitude(), location.getLongitude()),
+                    getOpponentLocation()))));
         }
     }
 
@@ -126,7 +150,7 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
 
     private void startMatchedService() {
         Log.d(TAG, "startMatchedService() 호출됨");
-        matchedServiceIntent = new Intent(this, MatchedService.class);
+        Intent matchedServiceIntent = new Intent(this, MatchedService.class);
         startService(matchedServiceIntent);
     }
 
@@ -134,6 +158,7 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
         return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.d(TAG, "Stomp Connected");
                 stompClient = MatchedService.getStompClient();
             }
         };
@@ -141,6 +166,9 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
 
     private void startNextActivity() {
         Log.d(TAG, "startNextActivity()가 호출되었습니다.");
+        Intent nextIntent = new Intent(this, MatchRidingActivity.class);
+        startActivity(nextIntent);
+        finish();
     }
 
     private BroadcastReceiver getMessageReceiver() {
@@ -150,11 +178,43 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
                 String message = intent.getStringExtra("message");
                 opponentLocationInfo = new Gson().fromJson(message, LocationInfoWrapperDTO.class)
                         .getLocationInfoResponseDTO();
+                setOpponentLocation();
 
                 if (opponentLocationInfo.isRidingStarted()) {
                     startNextActivity();
                 }
             }
         };
+    }
+
+    private void setOpponentLocation() {
+        // 지도 마커 설정
+        if (opponentMarker == null) {
+            opponentMarker = new Marker();
+            opponentMarker.setIcon(OverlayImage.fromResource(R.drawable.ic_icon_round));
+            opponentMarker.setPosition(getOpponentLocation());
+            opponentMarker.setMap(naverMap);
+            return;
+        }
+        opponentMarker.setPosition(getOpponentLocation());
+    }
+
+    private int calculateDistance(LatLng latLng1, LatLng latLng2) {
+        final double elevation = 0;
+        GlobalPosition position1 = new GlobalPosition(latLng1.latitude, latLng1.longitude, elevation);
+        GlobalPosition position2 = new GlobalPosition(latLng2.latitude, latLng2.longitude, elevation);
+
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        GeodeticMeasurement measurement = calculator.calculateGeodeticMeasurement(Ellipsoid.WGS84, position1, position2);
+        return (int) measurement.getPointToPointDistance();
+    }
+
+    private LatLng getOpponentLocation() {
+        String[] location = opponentLocationInfo.getLocation().split(",");
+        Log.d(TAG, "opponentLocation: " + Arrays.toString(location));
+        double longitude = Double.parseDouble(location[0]);
+        double latitude = Double.parseDouble(location[1]);
+
+        return new LatLng(latitude, longitude);
     }
 }
