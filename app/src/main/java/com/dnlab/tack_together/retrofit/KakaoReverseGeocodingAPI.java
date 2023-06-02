@@ -10,4 +10,6 @@ public interface KakaoReverseGeocodingAPI {
     @GET("geo/coord2address.json")
     Call<KakaoReverseGeocodingResponseDTO> requestReverseGeocoding(@Query("x") String x,
                                                                    @Query("y") String y);
+
+
 }
