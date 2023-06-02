@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +56,7 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
     private LocationInfoResponseDTO opponentLocationInfo;
     private Marker opponentMarker;
     private TextView distance;
+    private TextView opponentDepartureAgreed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,8 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
         sessionId = getIntent().getStringExtra("sessionId");
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
         distance = findViewById(R.id.sharingDistance);
+
+        opponentDepartureAgreed = findViewById(R.id.locationSharingOpponentDepartureAgreed);
 
         setOpponentNicknameText();
 
@@ -180,6 +185,10 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
                         .getLocationInfoResponseDTO();
                 setOpponentLocation();
 
+                if (opponentLocationInfo.isDepartureAgreed()) {
+                    opponentDepartureAgreed.setText("수락되었습니다");
+                    opponentDepartureAgreed.setTextColor(ContextCompat.getColor(MatchLocationSharingActivity.this, R.color.green));
+                }
                 if (opponentLocationInfo.isRidingStarted()) {
                     startNextActivity();
                 }
