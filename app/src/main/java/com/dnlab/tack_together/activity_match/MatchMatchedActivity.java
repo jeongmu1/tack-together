@@ -128,7 +128,7 @@ public class MatchMatchedActivity extends AppCompatActivity {
     private void startLocationSharingActivity() {
         Intent sharingIntent = new Intent(MatchMatchedActivity.this, MatchLocationSharingActivity.class);
         sharingIntent.putExtra("sessionId", sessionId);
-        sharingIntent.putExtra("opponentNickname", matchResultInfoDTO.getOpponentNickname());
+        sharingIntent.putExtra("matchResultInfo", matchResultInfoDTO);
         startActivity(sharingIntent);
 
         // 매칭 서비스 정지

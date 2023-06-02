@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.dnlab.tack_together.BuildConfig;
 import com.dnlab.tack_together.R;
+import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
 import com.dnlab.tack_together.api.dto.matched.LocationInfoResponseDTO;
 import com.dnlab.tack_together.api.dto.matched.LocationUpdateRequestDTO;
 import com.dnlab.tack_together.api.dto.wrapper.LocationInfoWrapperDTO;
@@ -57,11 +58,14 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
     private Marker opponentMarker;
     private TextView distance;
     private TextView opponentDepartureAgreed;
+    private MatchResultInfoDTO matchResultInfoDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_location_sharing);
+
+        matchResultInfoDTO = (MatchResultInfoDTO) getIntent().getSerializableExtra("matchResultInfo");
 
         MapView mapView = findViewById(R.id.locationSharingMapView);
         mapView.onCreate(savedInstanceState);
@@ -87,7 +91,7 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
     }
 
     private void setOpponentNicknameText() {
-        String opponentNickname = getIntent().getStringExtra("opponentNickname");
+        String opponentNickname = matchResultInfoDTO.getOpponentNickname();
 
         TextView opponentNicknameTextView = findViewById(R.id.sharingOpponentNickname);
         opponentNicknameTextView.setText(opponentNickname);
@@ -172,6 +176,7 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
     private void startNextActivity() {
         Log.d(TAG, "startNextActivity()가 호출되었습니다.");
         Intent nextIntent = new Intent(this, MatchRidingActivity.class);
+        nextIntent.putExtra("matchResultInfo", matchResultInfoDTO);
         startActivity(nextIntent);
         finish();
     }
