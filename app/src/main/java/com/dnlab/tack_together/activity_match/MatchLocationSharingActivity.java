@@ -175,6 +175,9 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
 
     private void startNextActivity() {
         Log.d(TAG, "startNextActivity()가 호출되었습니다.");
+
+        naverMap.setLocationTrackingMode(LocationTrackingMode.None);
+
         Intent nextIntent = new Intent(this, MatchRidingActivity.class);
         nextIntent.putExtra("matchResultInfo", matchResultInfoDTO);
         startActivity(nextIntent);
