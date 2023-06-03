@@ -1,4 +1,4 @@
-package com.dnlab.tack_together.retrofit;
+package com.dnlab.tack_together.retrofit.kakaogeo;
 
 import android.util.Log;
 

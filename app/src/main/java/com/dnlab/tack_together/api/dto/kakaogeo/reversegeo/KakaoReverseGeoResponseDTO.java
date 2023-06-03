@@ -1,15 +1,15 @@
-package com.dnlab.tack_together.api.dto.reversegeo;
+package com.dnlab.tack_together.api.dto.kakaogeo.reversegeo;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class KakaoReverseGeocodingResponseDTO implements Serializable {
+public class KakaoReverseGeoResponseDTO implements Serializable {
     @SerializedName("meta")
-    private MetaDTO meta;
+    private ReverseGeoMetaDTO meta;
     @SerializedName("documents")
-    private List<DocumentDTO> documents;
+    private List<ReverseGeoDocumentDTO> documents;
 
     @Override
     public String toString() {
@@ -19,22 +19,22 @@ public class KakaoReverseGeocodingResponseDTO implements Serializable {
                 '}';
     }
 
-    public KakaoReverseGeocodingResponseDTO() {
+    public KakaoReverseGeoResponseDTO() {
     }
 
-    public MetaDTO getMeta() {
+    public ReverseGeoMetaDTO getMeta() {
         return meta;
     }
 
-    public void setMeta(MetaDTO meta) {
+    public void setMeta(ReverseGeoMetaDTO meta) {
         this.meta = meta;
     }
 
-    public List<DocumentDTO> getDocuments() {
+    public List<ReverseGeoDocumentDTO> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(List<DocumentDTO> documents) {
+    public void setDocuments(List<ReverseGeoDocumentDTO> documents) {
         this.documents = documents;
     }
 }
