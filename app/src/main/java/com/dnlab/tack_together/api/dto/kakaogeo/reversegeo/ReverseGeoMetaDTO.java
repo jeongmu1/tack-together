@@ -1,10 +1,10 @@
-package com.dnlab.tack_together.api.dto.reversegeo;
+package com.dnlab.tack_together.api.dto.kakaogeo.reversegeo;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class MetaDTO implements Serializable {
+public class ReverseGeoMetaDTO implements Serializable {
     @SerializedName("total_count")
     private int totalCount;
 
@@ -15,7 +15,7 @@ public class MetaDTO implements Serializable {
                 '}';
     }
 
-    public MetaDTO() {
+    public ReverseGeoMetaDTO() {
     }
 
     public int getTotalCount() {

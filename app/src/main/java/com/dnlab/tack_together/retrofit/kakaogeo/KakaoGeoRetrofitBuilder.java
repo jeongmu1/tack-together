@@ -1,6 +1,5 @@
-package com.dnlab.tack_together.retrofit;
+package com.dnlab.tack_together.retrofit.kakaogeo;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.dnlab.tack_together.BuildConfig;
@@ -10,12 +9,12 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ReverseGeocodingRetrofitBuilder {
-    private static ReverseGeocodingRetrofitBuilder instance = null;
+public class KakaoGeoRetrofitBuilder {
+    private static KakaoGeoRetrofitBuilder instance = null;
     private final Retrofit retrofit;
     private static final String TAG = "ReverseGeocodingRetrofitBuilder";
 
-    private ReverseGeocodingRetrofitBuilder() {
+    private KakaoGeoRetrofitBuilder() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -31,10 +30,10 @@ public class ReverseGeocodingRetrofitBuilder {
                 .build();
     }
 
-    public synchronized static ReverseGeocodingRetrofitBuilder getInstance() {
+    public synchronized static KakaoGeoRetrofitBuilder getInstance() {
         Log.i(TAG, "getInstance: 호출되었습니다.");
         if (instance == null) {
-            instance = new ReverseGeocodingRetrofitBuilder();
+            instance = new KakaoGeoRetrofitBuilder();
         }
         return instance;
     }

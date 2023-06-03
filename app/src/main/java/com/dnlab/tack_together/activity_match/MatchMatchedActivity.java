@@ -21,14 +21,14 @@ import com.dnlab.tack_together.api.dto.common.MatchDecisionStatus;
 import com.dnlab.tack_together.api.dto.match.MatchRequestDTO;
 import com.dnlab.tack_together.api.dto.match.MatchResponseDTO;
 import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
-import com.dnlab.tack_together.api.dto.reversegeo.DocumentDTO;
-import com.dnlab.tack_together.api.dto.reversegeo.KakaoReverseGeocodingResponseDTO;
-import com.dnlab.tack_together.api.dto.reversegeo.RoadAddressDTO;
+import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.ReverseGeoDocumentDTO;
+import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.KakaoReverseGeoResponseDTO;
+import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.ReverseGeoRoadAddressDTO;
 import com.dnlab.tack_together.api.dto.route.LocationDTO;
 import com.dnlab.tack_together.api.dto.wrapper.MatchResponseWrapperDTO;
 import com.dnlab.tack_together.common.status.MatchingStatus;
-import com.dnlab.tack_together.retrofit.KakaoReverseGeocodingAPI;
-import com.dnlab.tack_together.retrofit.ReverseGeocodingRetrofitBuilder;
+import com.dnlab.tack_together.retrofit.kakaogeo.KakaoGeoAPI;
+import com.dnlab.tack_together.retrofit.kakaogeo.KakaoGeoRetrofitBuilder;
 import com.dnlab.tack_together.service.MatchingService;
 import com.google.gson.Gson;
 
@@ -156,20 +156,20 @@ public class MatchMatchedActivity extends AppCompatActivity {
         Log.d(TAG, "myDestination:" + matchRequestDTO.getDestination());
         String[] destination = matchRequestDTO.getDestination().split(",");
 
-        Call<KakaoReverseGeocodingResponseDTO> call = ReverseGeocodingRetrofitBuilder.getInstance()
+        Call<KakaoReverseGeoResponseDTO> call = KakaoGeoRetrofitBuilder.getInstance()
                 .getRetrofit()
-                .create(KakaoReverseGeocodingAPI.class)
+                .create(KakaoGeoAPI.class)
                 .requestReverseGeocoding(destination[0], destination[1]);
         call.enqueue(new Callback<>() {
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<KakaoReverseGeocodingResponseDTO> call, Response<KakaoReverseGeocodingResponseDTO> response) {
+            public void onResponse(Call<KakaoReverseGeoResponseDTO> call, Response<KakaoReverseGeoResponseDTO> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    DocumentDTO documentDTO = response.body()
+                    ReverseGeoDocumentDTO documentDTO = response.body()
                             .getDocuments()
                             .stream().findFirst().get();
-                    RoadAddressDTO roadAddressDTO = documentDTO.getRoadAddress();
+                    ReverseGeoRoadAddressDTO roadAddressDTO = documentDTO.getRoadAddress();
 
                     String address = "";
                     if (roadAddressDTO != null) {
@@ -184,7 +184,7 @@ public class MatchMatchedActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<KakaoReverseGeocodingResponseDTO> call, Throwable t) {
+            public void onFailure(Call<KakaoReverseGeoResponseDTO> call, Throwable t) {
                 Log.d(TAG, "통신 실패");
                 t.printStackTrace();
             }
@@ -201,22 +201,22 @@ public class MatchMatchedActivity extends AppCompatActivity {
 
     private void setDestinationText() {
         LocationDTO destination = matchResultInfoDTO.getRoutes().stream().findAny().get().getSummary().getDestination();
-        Call<KakaoReverseGeocodingResponseDTO> call = ReverseGeocodingRetrofitBuilder.getInstance()
+        Call<KakaoReverseGeoResponseDTO> call = KakaoGeoRetrofitBuilder.getInstance()
                 .getRetrofit()
-                .create(KakaoReverseGeocodingAPI.class)
+                .create(KakaoGeoAPI.class)
                 .requestReverseGeocoding(String.valueOf(destination.getX()), String.valueOf(destination.getY()));
 
         call.enqueue(new Callback<>() {
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<KakaoReverseGeocodingResponseDTO> call, Response<KakaoReverseGeocodingResponseDTO> response) {
+            public void onResponse(Call<KakaoReverseGeoResponseDTO> call, Response<KakaoReverseGeoResponseDTO> response) {
                 Log.d(TAG, "reverse geocoding response: " + response.body());
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    DocumentDTO documentDTO = response.body()
+                    ReverseGeoDocumentDTO documentDTO = response.body()
                             .getDocuments()
                             .stream().findFirst().get();
-                    RoadAddressDTO roadAddressDTO = documentDTO.getRoadAddress();
+                    ReverseGeoRoadAddressDTO roadAddressDTO = documentDTO.getRoadAddress();
 
                     String address = "";
                     if (roadAddressDTO != null) {
@@ -232,7 +232,7 @@ public class MatchMatchedActivity extends AppCompatActivity {
 
             @Override
             @EverythingIsNonNull
-            public void onFailure(Call<KakaoReverseGeocodingResponseDTO> call, Throwable t) {
+            public void onFailure(Call<KakaoReverseGeoResponseDTO> call, Throwable t) {
                 Log.d(TAG, "통신 실패");
                 t.printStackTrace();
 

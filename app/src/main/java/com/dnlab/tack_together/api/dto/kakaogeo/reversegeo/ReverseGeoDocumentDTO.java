@@ -1,14 +1,14 @@
-package com.dnlab.tack_together.api.dto.reversegeo;
+package com.dnlab.tack_together.api.dto.kakaogeo.reversegeo;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class DocumentDTO implements Serializable {
+public class ReverseGeoDocumentDTO implements Serializable {
     @SerializedName("road_address")
-    private RoadAddressDTO roadAddress;
+    private ReverseGeoRoadAddressDTO roadAddress;
     @SerializedName("address")
-    private AddressDTO address;
+    private ReverseGeoAddressDTO address;
 
     @Override
     public String toString() {
@@ -18,22 +18,22 @@ public class DocumentDTO implements Serializable {
                 '}';
     }
 
-    public DocumentDTO() {
+    public ReverseGeoDocumentDTO() {
     }
 
-    public RoadAddressDTO getRoadAddress() {
+    public ReverseGeoRoadAddressDTO getRoadAddress() {
         return roadAddress;
     }
 
-    public void setRoadAddress(RoadAddressDTO roadAddress) {
+    public void setRoadAddress(ReverseGeoRoadAddressDTO roadAddress) {
         this.roadAddress = roadAddress;
     }
 
-    public AddressDTO getAddress() {
+    public ReverseGeoAddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(AddressDTO address) {
+    public void setAddress(ReverseGeoAddressDTO address) {
         this.address = address;
     }
 }
