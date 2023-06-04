@@ -72,8 +72,6 @@ public class MatchMatchedActivity extends AppCompatActivity {
             acceptedLayout.setVisibility(View.VISIBLE);
             stompClient.send("/app/match/accept").subscribe();
             accepted = true;
-
-            checkAllAccepted();
         });
 
         opponentStatus = findViewById(R.id.matchedOpponentStatus);
@@ -83,6 +81,7 @@ public class MatchMatchedActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 String message = intent.getStringExtra("message");
                 matchResponseDTO = new Gson().fromJson(message, MatchResponseWrapperDTO.class).getMatchResponseDTO();
+                Log.d(TAG, "매칭 반응 DTO : " + matchResponseDTO);
 
                 if (matchResponseDTO.getMatchDecisionStatus().equals(MatchDecisionStatus.REJECTED)) {
                     opponentStatus.setTextColor(ContextCompat.getColor(MatchMatchedActivity.this, R.color.red));
@@ -100,6 +99,7 @@ public class MatchMatchedActivity extends AppCompatActivity {
                     opponentAccepted = true;
 
                     sessionId = matchResponseDTO.getMatchSessionId();
+                    Log.d(TAG, "매칭 수락대기 sessionId: " + sessionId);
 
                     checkAllAccepted();
                 }
