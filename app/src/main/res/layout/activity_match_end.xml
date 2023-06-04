@@ -61,13 +61,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!--        <TextView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:layout_marginLeft="10dp"-->
-        <!--            android:text="매칭 상대 정보"/>-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,11 +75,11 @@
                 app:srcCompat="@drawable/ic_icon_round" />
 
             <TextView
+                android:id="@+id/settlementOpponentNickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:textStyle="bold"
-                android:text="홍길동"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,6 +95,12 @@
                 android:layout_gravity="right|center_vertical|end"
                 android:text="비율: " />
             <TextView
+                android:id="@+id/settlementOpponentRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical|end"
+                android:text="" />
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical|end"
@@ -111,6 +110,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical|end"
                 android:text=" | 요금: " />
+            <TextView
+                android:id="@+id/settlementOpponentFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical|end" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -122,32 +126,88 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:padding="10dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/settlementWaypoint"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_marginLeft="10dp"
-                android:text="총 요금 입력 : "
-                android:textSize="15sp" />
+                android:gravity="right"
+                android:padding="10dp"
+                android:visibility="visible"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" >
 
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="10dp"
+                    android:text="계좌번호 : "
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/accountNumberInput"
+                    android:visibility="visible"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:layout_marginRight="20dp"/>
+
+                <TextView
+                    android:id="@+id/accountNumberOutput"
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/settlementDestination"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="right"
+                android:padding="10dp"
+                android:visibility="visible"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="10dp"
+                    android:text="총 요금 : "
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/totalFareInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:layout_weight="3"/>
+
+                <TextView
+                    android:id="@+id/totalFareOutput"
+                    android:layout_width="0dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3" />
 
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="원"
-                android:textSize="15sp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="원"
+                    android:textSize="15sp" />
 
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -162,9 +222,12 @@
                 android:layout_height="wrap_content"
                 android:text="나의 비율 : "
                 android:textSize="15sp" />
-
             <TextView
-                android:id="@+id/endEstimatedTotalFare"
+                android:id="@+id/settlementMyRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp" />
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="%"
@@ -175,7 +238,11 @@
                 android:layout_height="wrap_content"
                 android:text=" | 나의 요금 : "
                 android:textSize="15sp" />
-
+            <TextView
+                android:id="@+id/settlementMyFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp" />
             <TextView
                 android:id="@+id/endEstimatedFare"
                 android:layout_width="wrap_content"
@@ -286,7 +353,6 @@
                 android:padding="20dp" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 

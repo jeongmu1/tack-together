@@ -132,6 +132,7 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
         Intent nextIntent = new Intent(this, MatchEndActivity.class);
         nextIntent.putExtra("destination", destination);
         nextIntent.putExtra("settlementReceivedRequestDTO", settlementReceivedRequestDTO);
+        nextIntent.putExtra("matchResultInfo", matchResultInfo);
         startActivity(nextIntent);
         finish();
     }
@@ -146,6 +147,8 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
                     settlementReceivedRequestDTO = new Gson().fromJson(message, SettlementReceivedRequestWrapperDTO.class)
                             .getPayload();
                     startNextActivity();
+                } else {
+                    opponentRidingStatus.setText("하차");
                 }
             }
         };
