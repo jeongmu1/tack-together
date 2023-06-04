@@ -9,12 +9,13 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 
 import com.dnlab.tack_together.R;
+import com.dnlab.tack_together.activity_history.HistoryMainActivity;
 import com.dnlab.tack_together.activity_match.MatchMainActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     CardView matchMenuCardButton;
-
+    CardView historyMenuCardButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
 
         matchMenuCardButton.setOnClickListener(v->{
             Intent intent = new Intent(getApplicationContext(), MatchMainActivity.class);
+            startActivity(intent);
+        });
+
+        historyMenuCardButton = (CardView) findViewById(R.id.historyMenuButton);
+
+        historyMenuCardButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), HistoryMainActivity.class);
             startActivity(intent);
         });
 
