@@ -1,11 +1,13 @@
 package com.dnlab.tack_together.activity_history;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.dnlab.tack_together.R;
 import com.dnlab.tack_together.adapter_history.HistoryAdapter;
 import com.dnlab.tack_together.api.dto.history.HistorySummaryListDTO;
 import com.dnlab.tack_together.databinding.ActivityHistoryMainBinding;
@@ -35,16 +37,22 @@ public class HistoryMainActivity extends AppCompatActivity {
         historyAPI = RetrofitBuilder.getInstance(getApplicationContext()).getRetrofit().create(HistoryAPI.class);
 
         binding = ActivityHistoryMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+//        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_history_main);
 
-        recyclerView = binding.historySummaryItems;
+        RecyclerView recyclerView = findViewById(R.id.history_summary_items);
 
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager((Context) this);
+        recyclerView.setLayoutManager(linearLayoutManager); //LayoutManager 설정
 
-        List<HistorySummaryListDTO> historySummaryListDTOList = fetchHistorySummaries();
-        mAdapter = new HistoryAdapter(historySummaryListDTOList);
-        recyclerView.setAdapter(mAdapter);
+        HistoryAdapter historyAdapter = new HistoryAdapter(fetchHistorySummaries());
+        recyclerView.setAdapter(historyAdapter); //Adapter 설정
+
+//        recyclerView = binding.historySummaryItems;
+//        layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+//        mAdapter = new HistoryAdapter(historySummaryListDTOList);
+//        recyclerView.setAdapter(mAdapter);
     }
     private List<HistorySummaryListDTO> fetchHistorySummaries() {
         List<HistorySummaryListDTO> historyData = new ArrayList<>();

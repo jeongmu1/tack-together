@@ -3,7 +3,7 @@
     <string name="app_name_eng">Tack-Together</string>
     <string name="title_activity_scrolling">이용기록</string>
     <string name="large_text">
-        "\n\n"
+        "\n\n\n"
         "이 부분에 item들을 띄워줘야함. how?"
     </string>
     <string name="action_settings">Settings</string>
