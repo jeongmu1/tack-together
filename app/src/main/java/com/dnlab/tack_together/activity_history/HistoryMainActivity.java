@@ -56,9 +56,10 @@ public class HistoryMainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     HistorySummaryListDTO historySummaryListDTO = response.body();
                     if (historySummaryListDTO != null) {
-                        // 이용기록 출력
+                        Log.i(TAG, "이용기록 출력");
+
                     } else {
-                        // 이용기록이 없습니다 출력
+                        Log.i(TAG, "이용기록 없습니다 출력");
                     }
                 }
             }
