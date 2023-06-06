@@ -183,6 +183,7 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
         nextIntent.putExtra("destination", destination);
         nextIntent.putExtra("settlementReceivedRequest", settlementReceivedRequestDTO);
         nextIntent.putExtra("matchResultInfo", matchResultInfo);
+        nextIntent.putExtra("sessionId", sessionId);
         startActivity(nextIntent);
         finish();
     }

@@ -1,6 +1,7 @@
 package com.dnlab.tack_together.activity_match;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,12 +16,22 @@ import com.dnlab.tack_together.R;
 import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
 import com.dnlab.tack_together.api.dto.matched.SettlementReceivedRequestDTO;
 import com.dnlab.tack_together.api.dto.matched.SettlementRequestDTO;
+import com.dnlab.tack_together.api.dto.settlement.RouteInfoDTO;
 import com.dnlab.tack_together.api.dto.settlement.SettlementInfoDTO;
 import com.dnlab.tack_together.retrofit.RetrofitBuilder;
 import com.dnlab.tack_together.retrofit.SettlementAPI;
 import com.dnlab.tack_together.service.MatchedService;
 import com.google.gson.Gson;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
+import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.MapView;
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.PolylineOverlay;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import io.reactivex.disposables.Disposable;
@@ -30,7 +41,7 @@ import retrofit2.Response;
 import retrofit2.internal.EverythingIsNonNull;
 import ua.naiksoftware.stomp.StompClient;
 
-public class MatchEndActivity extends AppCompatActivity {
+public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCallback {
     private SettlementReceivedRequestDTO settlementReceivedRequestDTO;
     private boolean destination;
     private SettlementInfoDTO settlementInfo;
@@ -47,6 +58,8 @@ public class MatchEndActivity extends AppCompatActivity {
     private TextView myFareRate;
     private TextView myFare;
     private Button endButton;
+    private NaverMap naverMap;
+    private String sessionId;
 
     private static final String TAG = "MatchEndActivity";
 
@@ -55,7 +68,12 @@ public class MatchEndActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_end);
 
+        MapView mapView = findViewById(R.id.endMapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
         destination = getIntent().getBooleanExtra("destination", false);
+        sessionId = getIntent().getStringExtra("sessionId");
         matchResultInfo = (MatchResultInfoDTO) getIntent().getSerializableExtra("matchResultInfo");
         settlementReceivedRequestDTO = (SettlementReceivedRequestDTO) getIntent().getSerializableExtra("settlementReceivedRequest");
         stompClient = MatchedService.getStompClient();
@@ -84,6 +102,11 @@ public class MatchEndActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onMapReady(@NonNull NaverMap naverMap) {
+        this.naverMap = naverMap;
+    }
+
     private void setViews() {
         opponentNickname.setText(matchResultInfo.getOpponentNickname());
     }
@@ -102,11 +125,13 @@ public class MatchEndActivity extends AppCompatActivity {
     private void handleRequestingSettlement(View view) {
         if (destination) {
             SettlementRequestDTO settlementRequestDTO = new SettlementRequestDTO();
+            settlementRequestDTO.setSessionId(sessionId);
             settlementRequestDTO.setAccountInfo(accountInput.getText().toString().trim());
             settlementRequestDTO.setTotalFare(Integer.parseInt(totalFareInput.getText().toString().trim()));
 
             Disposable disposable = stompClient.send("/app/matched/settlement", new Gson().toJson(settlementRequestDTO)).subscribe(() -> {
                 stopService(new Intent(this, MatchedService.class));
+                MatchMainActivity.destroyActivity();
                 finish();
             });
         } else {
@@ -125,6 +150,11 @@ public class MatchEndActivity extends AppCompatActivity {
                     assert settlementInfo != null;
                     opponentFareRate.setText(getStringOfDouble(settlementInfo.getOpponentPaymentRate()));
                     myFareRate.setText(getStringOfDouble(settlementInfo.getPaymentRate()));
+
+                    RouteInfoDTO routeInfoDTO = new RouteInfoDTO(settlementInfo.getOrigin(),
+                            settlementInfo.getWaypoint(),
+                            settlementInfo.getDestination());
+                    setMapView(routeInfoDTO);
 
                     totalFareInput.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -170,6 +200,43 @@ public class MatchEndActivity extends AppCompatActivity {
         return String.format(Locale.KOREA, "%.2f", value);
     }
 
+    private void setMapView(RouteInfoDTO routeInfoDTO) {
+        LatLng origin = parseStringLocation(routeInfoDTO.getOrigin());
+        LatLng waypoint = parseStringLocation(routeInfoDTO.getWaypoint());
+        LatLng destination = parseStringLocation(routeInfoDTO.getDestination());
+
+        printMarkerOfLocation(origin);
+        printMarkerOfLocation(waypoint);
+        printMarkerOfLocation(destination);
+
+        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLngBounds.Builder()
+                .include(origin)
+                .include(waypoint)
+                .include(destination)
+                .build().getCenter());
+        naverMap.moveCamera(cameraUpdate);
+
+        PolylineOverlay polyline = new PolylineOverlay();
+        polyline.setCoords(Arrays.asList(
+                origin,
+                waypoint,
+                destination
+        ));
+        polyline.setPattern(10, 10);
+        polyline.setMap(naverMap);
+    }
+
+    private void printMarkerOfLocation(LatLng location) {
+        Marker marker = new Marker();
+        marker.setPosition(location);
+        marker.setMap(naverMap);
+    }
+
+    private LatLng parseStringLocation(String location) {
+        String[] stringLocations = location.split(",");
+        return new LatLng(Double.parseDouble(stringLocations[1]), Double.parseDouble(stringLocations[0]));
+    }
+
     private void setViewForWaypoint() {
         accountOutput.setVisibility(View.VISIBLE);
         accountInput.setVisibility(View.GONE);
@@ -185,5 +252,14 @@ public class MatchEndActivity extends AppCompatActivity {
 
         myFare.setText(String.valueOf(settlementReceivedRequestDTO.getRequestedFare()));
         myFareRate.setText(getStringOfDouble(settlementReceivedRequestDTO.getWaypointRate()));
+
+        endButton.setOnClickListener(this::handleFinishSettlement);
+
+        setMapView(settlementReceivedRequestDTO.getRouteInfo());
+    }
+
+    private void handleFinishSettlement(View view) {
+        MatchMainActivity.destroyActivity();
+        finish();
     }
 }
