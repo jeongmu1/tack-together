@@ -1,5 +1,6 @@
 package com.dnlab.tack_together.activity_match;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,6 +23,7 @@ import com.google.gson.Gson;
 
 import java.util.Locale;
 
+import io.reactivex.disposables.Disposable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,6 +57,7 @@ public class MatchEndActivity extends AppCompatActivity {
 
         destination = getIntent().getBooleanExtra("destination", false);
         matchResultInfo = (MatchResultInfoDTO) getIntent().getSerializableExtra("matchResultInfo");
+        settlementReceivedRequestDTO = (SettlementReceivedRequestDTO) getIntent().getSerializableExtra("settlementReceivedRequest");
         stompClient = MatchedService.getStompClient();
 
         opponentNickname = findViewById(R.id.settlementOpponentNickname);
@@ -76,6 +79,7 @@ public class MatchEndActivity extends AppCompatActivity {
         if (destination) {
             setViewsForDestination();
         } else {
+            stopService(new Intent(this, MatchedService.class));
             setViewForWaypoint();
         }
     }
@@ -96,11 +100,18 @@ public class MatchEndActivity extends AppCompatActivity {
     }
 
     private void handleRequestingSettlement(View view) {
-        SettlementRequestDTO settlementRequestDTO = new SettlementRequestDTO();
-        settlementRequestDTO.setAccountInfo(accountInput.getText().toString().trim());
-        settlementRequestDTO.setTotalFare(Integer.parseInt(totalFareInput.getText().toString().trim()));
+        if (destination) {
+            SettlementRequestDTO settlementRequestDTO = new SettlementRequestDTO();
+            settlementRequestDTO.setAccountInfo(accountInput.getText().toString().trim());
+            settlementRequestDTO.setTotalFare(Integer.parseInt(totalFareInput.getText().toString().trim()));
 
-        stompClient.send("/app/matched/settlement", new Gson().toJson(settlementRequestDTO)).subscribe();
+            Disposable disposable = stompClient.send("/app/matched/settlement", new Gson().toJson(settlementRequestDTO)).subscribe(() -> {
+                stopService(new Intent(this, MatchedService.class));
+                finish();
+            });
+        } else {
+            finish();
+        }
     }
 
     private Callback<SettlementInfoDTO> getCallBackOfSettlementInfo() {
@@ -122,10 +133,21 @@ public class MatchEndActivity extends AppCompatActivity {
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            int totalFare = Integer.parseInt(s.toString());
-                            int fare = (int) (Double.parseDouble(s.toString()) / (settlementInfo.getPaymentRate() / 100));
-                            myFare.setText(fare);
-                            opponentFare.setText(totalFare - fare);
+                            String trimmedString = s.toString().trim();
+                            if (trimmedString.equals("")) {
+                                myFare.setText(String.valueOf(0));
+                                opponentFare.setText(String.valueOf(0));
+                                return;
+                            }
+                            if (trimmedString.length() < 1) {
+                                myFare.setText(String.valueOf(0));
+                                opponentFare.setText(String.valueOf(0));
+                                return;
+                            }
+                            int totalFare = Integer.parseInt(trimmedString);
+                            int fare = (int) ((double) totalFare * (settlementInfo.getPaymentRate() / 100));
+                            myFare.setText(String.valueOf(fare));
+                            opponentFare.setText(String.valueOf(totalFare - fare));
                         }
 
                         @Override
@@ -154,5 +176,14 @@ public class MatchEndActivity extends AppCompatActivity {
 
         totalFareOutput.setVisibility(View.VISIBLE);
         totalFareInput.setVisibility(View.GONE);
+
+        accountOutput.setText(settlementReceivedRequestDTO.getAccountInfo());
+        totalFareOutput.setText(String.valueOf(settlementReceivedRequestDTO.getTotalFare()));
+
+        opponentFare.setText(String.valueOf(settlementReceivedRequestDTO.getTotalFare() - settlementReceivedRequestDTO.getRequestedFare()));
+        opponentFareRate.setText(getStringOfDouble(settlementReceivedRequestDTO.getDestinationRate()));
+
+        myFare.setText(String.valueOf(settlementReceivedRequestDTO.getRequestedFare()));
+        myFareRate.setText(getStringOfDouble(settlementReceivedRequestDTO.getWaypointRate()));
     }
 }

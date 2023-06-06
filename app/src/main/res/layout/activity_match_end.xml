@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical|end"
-                android:text="" />
+                android:text="0" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -114,6 +114,7 @@
                 android:id="@+id/settlementOpponentFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="0"
                 android:layout_gravity="right|center_vertical|end" />
             <TextView
                 android:layout_width="wrap_content"
@@ -168,8 +169,8 @@
             <LinearLayout
                 android:id="@+id/settlementDestination"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
                 android:padding="10dp"
                 android:visibility="visible"
                 android:orientation="horizontal"
@@ -189,8 +190,8 @@
                     android:id="@+id/totalFareInput"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:layout_weight="3"/>
+                    android:layout_weight="3"
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/totalFareOutput"
@@ -225,6 +226,7 @@
             <TextView
                 android:id="@+id/settlementMyRate"
                 android:layout_width="wrap_content"
+                android:text="0"
                 android:layout_height="wrap_content"
                 android:textSize="15sp" />
             <TextView
@@ -242,6 +244,7 @@
                 android:id="@+id/settlementMyFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="0"
                 android:textSize="15sp" />
             <TextView
                 android:id="@+id/endEstimatedFare"

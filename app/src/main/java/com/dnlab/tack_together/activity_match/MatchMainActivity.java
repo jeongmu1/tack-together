@@ -37,10 +37,14 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     private Button matchFindButton, searchDestinationButton;
     private TextView searchedDestination;
 
+    private static MatchMainActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_main);
+
+        instance = this;
 
         mapView = findViewById(R.id.matchMainMapView);
         mapView.onCreate(savedInstanceState);
@@ -61,7 +65,7 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
             intent.putExtra("requestInfo", new MatchRequestDTO("user1",
                     "user1",
                     "129.012175,35.151238",
-                    "129.00501,35.1449747",
+                    "129.0006581,35.146861",
                     (short) 2,
                     (short) 2));
             startActivity(intent);
@@ -143,5 +147,12 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    public static void destroyActivity() {
+        if (instance != null) {
+            instance.finish();
+            instance = null;
+        }
     }
 }
