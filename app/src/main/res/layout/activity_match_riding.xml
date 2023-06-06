@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,12 +10,12 @@
         android:id="@+id/ridingMapView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:navermap_locationButtonEnabled="true"
-        app:navermap_tiltGesturesEnabled="false"
         app:layout_constraintBottom_toTopOf="@+id/ridingOpponentInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:navermap_locationButtonEnabled="true"
+        app:navermap_tiltGesturesEnabled="false" />
 
     <LinearLayout
         android:id="@+id/ridingTitleBarLayout"
@@ -61,18 +60,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!--        <TextView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:layout_marginLeft="10dp"-->
-        <!--            android:text="매칭 상대 정보"/>-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
 
             <ImageView
@@ -82,26 +74,27 @@
                 app:srcCompat="@drawable/ic_icon_round" />
 
             <TextView
+                android:id="@+id/ridingOpponentNickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="홍길동"
                 android:textSize="30sp"
-                android:textStyle="bold"
-                android:text="홍길동"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 android:layout_weight="1"
-                android:text="님"/>
+                android:text="님"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/ridingOpponentStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical|end"
-                android:text="동승중...|하차함 바뀜" />
-
+                android:text="동승중 ..." />
 
 
         </LinearLayout>
@@ -123,6 +116,12 @@
                 android:id="@+id/ridingEstimatedTotalFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="원"
                 android:textSize="15sp" />
 
@@ -136,77 +135,70 @@
                 android:id="@+id/ridingEstimatedFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="원"
                 android:textSize="15sp" />
 
         </LinearLayout>
-
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:orientation="horizontal">-->
-
-        <!--                    <TextView-->
-        <!--                        android:layout_width="wrap_content"-->
-        <!--                        android:layout_height="wrap_content"-->
-        <!--                        android:text="나와의 거리 : "/>-->
-
-        <!--                    <TextView-->
-        <!--                        android:layout_width="wrap_content"-->
-        <!--                        android:layout_height="wrap_content"-->
-        <!--                        android:text="10m"/>-->
-
-        <!--        </LinearLayout>-->
-
-
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:padding="10dp"-->
-        <!--            android:gravity="right"-->
-        <!--            android:orientation="horizontal">-->
-
-        <!--            <TextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:textSize="15sp"-->
-        <!--                android:text="예상 요금 : "/>-->
-
-        <!--            <TextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:textSize="15sp"-->
-        <!--                android:text="10000원"/>-->
-
-        <!--            <TextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:textSize="15sp"-->
-        <!--                android:text=" | 나의 예상 요금 : "/>-->
-
-        <!--            <TextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:textSize="15sp"-->
-        <!--                android:text="5000원"/>-->
-
-        <!--        </LinearLayout>-->
-
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ridingWaitingSettlement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <!-- '매칭 수락/거절' 버튼 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="정산 대기중입니다."
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:paddingBottom="60sp"
+            android:text="상대방의 정산 요청을 기다리고 있습니다."
+            android:textAlignment="center"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+        </LinearLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ridingButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:orientation="vertical"
         android:paddingTop="30dp"
         android:paddingBottom="30dp"
-        android:orientation="vertical"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/lightGray">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:layout_width="match_parent"
@@ -216,15 +208,15 @@
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="25sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:text="동승이 완료되면 정산하기 버튼을 눌러주세요"
+            android:text="동승이 완료되면 하차하기 버튼을 눌러주세요"
             android:textAlignment="center"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -235,17 +227,16 @@
                 android:id="@+id/ridingEndButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="정산하기"
-                android:padding="20dp" />
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:text="하차하기" />
 
         </LinearLayout>
 
 
     </LinearLayout>
-
 
 
 </android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.dnlab.tack_together.R;
 import com.dnlab.tack_together.activity_main.AddressApiActivity;
+import com.dnlab.tack_together.api.dto.match.MatchRequestDTO;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
@@ -36,10 +37,14 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     private Button matchFindButton, searchDestinationButton;
     private TextView searchedDestination;
 
+    private static MatchMainActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_main);
+
+        instance = this;
 
         mapView = findViewById(R.id.matchMainMapView);
         mapView.onCreate(savedInstanceState);
@@ -57,6 +62,12 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
         matchFindButton = findViewById(R.id.matchFindButton);
         matchFindButton.setOnClickListener(v-> {
             Intent intent = new Intent(getApplicationContext(), MatchMatchingActivity.class);
+            intent.putExtra("requestInfo", new MatchRequestDTO("user1",
+                    "user1",
+                    "129.012175,35.151238",
+                    "129.0006581,35.146861",
+                    (short) 2,
+                    (short) 2));
             startActivity(intent);
         });
     }
@@ -136,5 +147,12 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    public static void destroyActivity() {
+        if (instance != null) {
+            instance.finish();
+            instance = null;
+        }
     }
 }

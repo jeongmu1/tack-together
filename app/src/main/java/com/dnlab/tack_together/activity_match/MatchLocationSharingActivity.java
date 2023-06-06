@@ -179,6 +179,7 @@ public class MatchLocationSharingActivity extends AppCompatActivity implements O
 
         Intent nextIntent = new Intent(this, MatchRidingActivity.class);
         nextIntent.putExtra("matchResultInfo", matchResultInfoDTO);
+        nextIntent.putExtra("sessionId", sessionId);
         startActivity(nextIntent);
         finish();
     }

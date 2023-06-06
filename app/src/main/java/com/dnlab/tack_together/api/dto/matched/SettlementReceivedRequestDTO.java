@@ -15,8 +15,41 @@ public class SettlementReceivedRequestDTO implements Serializable {
     private int totalFare;
     @SerializedName("accountInfo")
     private String accountInfo;
+    @SerializedName("waypointRate")
+    private double waypointRate;
+    @SerializedName("destinationRate")
+    private double destinationRate;
+
+    @Override
+    public String toString() {
+        return "SettlementReceivedRequestDTO{" +
+                "sessionId='" + sessionId + '\'' +
+                ", username='" + username + '\'' +
+                ", requestedFare=" + requestedFare +
+                ", totalFare=" + totalFare +
+                ", accountInfo='" + accountInfo + '\'' +
+                ", waypointRate=" + waypointRate +
+                ", destinationRate=" + destinationRate +
+                '}';
+    }
 
     public SettlementReceivedRequestDTO() {
+    }
+
+    public double getDestinationRate() {
+        return destinationRate;
+    }
+
+    public void setDestinationRate(double destinationRate) {
+        this.destinationRate = destinationRate;
+    }
+
+    public double getWaypointRate() {
+        return waypointRate;
+    }
+
+    public void setWaypointRate(double waypointRate) {
+        this.waypointRate = waypointRate;
     }
 
     public String getSessionId() {
