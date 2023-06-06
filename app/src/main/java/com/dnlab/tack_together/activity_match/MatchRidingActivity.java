@@ -20,16 +20,26 @@ import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
 import com.dnlab.tack_together.api.dto.matched.DropOffNotificationDTO;
 import com.dnlab.tack_together.api.dto.matched.DropOffRequestDTO;
 import com.dnlab.tack_together.api.dto.matched.SettlementReceivedRequestDTO;
+import com.dnlab.tack_together.api.dto.route.LocationDTO;
+import com.dnlab.tack_together.api.dto.route.RouteDTO;
+import com.dnlab.tack_together.api.dto.route.SummaryDTO;
 import com.dnlab.tack_together.api.dto.wrapper.DropOffNotificationWrapperDTO;
 import com.dnlab.tack_together.api.dto.wrapper.SettlementReceivedRequestWrapperDTO;
 import com.dnlab.tack_together.service.MatchedService;
 import com.google.gson.Gson;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.LocationOverlay;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.PolylineOverlay;
 import com.naver.maps.map.util.FusedLocationSource;
+
+import java.util.Arrays;
 
 import ua.naiksoftware.stomp.StompClient;
 
@@ -107,6 +117,45 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
         LocationOverlay locationOverlay = naverMap.getLocationOverlay();
         locationOverlay.setVisible(true);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+        matchResultInfo.getRoutes().stream().findFirst()
+                .ifPresent(this::setMapViews);
+    }
+
+    private void setMapViews(RouteDTO routeDTO) {
+        SummaryDTO summary = routeDTO.getSummary();
+        LocationDTO origin = summary.getOrigin();
+        LocationDTO waypoint = summary.getWaypoints().stream().findAny().get();
+        LocationDTO destination = summary.getDestination();
+
+        LatLng originLatLng = new LatLng(origin.getY(), origin.getX());
+        LatLng waypointLatLng = new LatLng(waypoint.getY(), waypoint.getX());
+        LatLng destinationLatLng = new LatLng(destination.getY(), destination.getX());
+
+        naverMap.moveCamera(CameraUpdate.scrollTo(new LatLngBounds.Builder()
+                .include(originLatLng)
+                .include(waypointLatLng)
+                .include(destinationLatLng)
+                .build().getCenter()));
+
+        printMarker(origin);
+        printMarker(waypoint);
+        printMarker(destination);
+
+        PolylineOverlay polyline = new PolylineOverlay();
+        polyline.setCoords(Arrays.asList(
+                originLatLng,
+                waypointLatLng,
+                destinationLatLng
+        ));
+        polyline.setPattern(10, 10);
+        polyline.setMap(naverMap);
+    }
+
+    private void printMarker(LocationDTO location) {
+        Marker marker = new Marker();
+        marker.setPosition(new LatLng(location.getY(), location.getX()));
+        marker.setMap(naverMap);
     }
 
     private void handleDropOff(View view) {
