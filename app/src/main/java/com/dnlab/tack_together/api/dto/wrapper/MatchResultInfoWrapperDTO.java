@@ -9,14 +9,26 @@ public class MatchResultInfoWrapperDTO implements Serializable {
     @SerializedName("payload")
     private MatchResultInfoDTO payload;
 
-    public MatchResultInfoWrapperDTO() {
-    }
+    @SerializedName("headers")
+    private StompHeaderDTO headers;
 
     @Override
     public String toString() {
         return "MatchResultInfoWrapperDTO{" +
                 "payload=" + payload +
+                ", headers=" + headers +
                 '}';
+    }
+
+    public MatchResultInfoWrapperDTO() {
+    }
+
+    public StompHeaderDTO getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(StompHeaderDTO headers) {
+        this.headers = headers;
     }
 
     public MatchResultInfoDTO getPayload() {

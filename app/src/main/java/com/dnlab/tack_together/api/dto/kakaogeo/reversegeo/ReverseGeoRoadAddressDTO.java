@@ -1,10 +1,10 @@
-package com.dnlab.tack_together.api.dto.reversegeo;
+package com.dnlab.tack_together.api.dto.kakaogeo.reversegeo;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class RoadAddressDTO implements Serializable {
+public class ReverseGeoRoadAddressDTO implements Serializable {
     @SerializedName("address_name")
     private String addressName;
     @SerializedName("region_1depth_name")
@@ -39,7 +39,7 @@ public class RoadAddressDTO implements Serializable {
                 '}';
     }
 
-    public RoadAddressDTO() {
+    public ReverseGeoRoadAddressDTO() {
     }
 
     public String getAddressName() {

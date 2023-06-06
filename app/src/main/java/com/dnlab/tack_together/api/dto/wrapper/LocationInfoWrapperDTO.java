@@ -9,10 +9,14 @@ public class LocationInfoWrapperDTO implements Serializable {
     @SerializedName("payload")
     private LocationInfoResponseDTO locationInfoResponseDTO;
 
+    @SerializedName("headers")
+    private StompHeaderDTO headers;
+
     @Override
     public String toString() {
         return "LocationInfoWrapperDTO{" +
                 "locationInfoResponseDTO=" + locationInfoResponseDTO +
+                ", headers=" + headers +
                 '}';
     }
 
@@ -21,6 +25,14 @@ public class LocationInfoWrapperDTO implements Serializable {
 
     public LocationInfoResponseDTO getLocationInfoResponseDTO() {
         return locationInfoResponseDTO;
+    }
+
+    public StompHeaderDTO getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(StompHeaderDTO headers) {
+        this.headers = headers;
     }
 
     public void setLocationInfoResponseDTO(LocationInfoResponseDTO locationInfoResponseDTO) {

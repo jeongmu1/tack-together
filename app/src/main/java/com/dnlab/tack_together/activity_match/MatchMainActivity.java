@@ -1,29 +1,25 @@
 package com.dnlab.tack_together.activity_match;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.dnlab.tack_together.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
+import com.dnlab.tack_together.activity_main.AddressApiActivity;
+import com.dnlab.tack_together.api.dto.match.MatchRequestDTO;
 import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.LocationOverlay;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
 
 public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -35,13 +31,20 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     private NaverMap naverMap;
     private MapView mapView;
     private LocationOverlay locationOverlay;
+    private String myDestinationAddress;
+    private LatLng myDestinationLocation;
 
-    private Button matchFindButton;
+    private Button matchFindButton, searchDestinationButton;
+    private TextView searchedDestination;
+
+    private static MatchMainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_main);
+
+        instance = this;
 
         mapView = findViewById(R.id.matchMainMapView);
         mapView.onCreate(savedInstanceState);
@@ -49,35 +52,39 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
 
         locationSource = new FusedLocationSource(this, 1000);
 
-//        locationRequest = new LocationRequest()
-//                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-//                .setInterval(2000)
-//                .setFastestInterval(1000);
-//
-//        locationCallback = new LocationCallback() {
-//            @Override
-//            public void onLocationResult(LocationResult locationResult) {
-//                if (locationResult == null) {
-//                    return;
-//                }
-//
-//                for (Location location : locationResult.getLocations()) {
-//                    LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-//                    CameraUpdate cameraUpdate = CameraUpdate.scrollTo(currentLatLng);
-//                    naverMap.moveCamera(cameraUpdate);
-//                    locationOverlay.setPosition(currentLatLng);
-//                }
-//            }
-//        };
-//
-//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        searchDestinationButton = findViewById(R.id.searchDestination);
+        searchDestinationButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), AddressApiActivity.class);
+            startActivityForResult(intent, 10000);
+        });
 
         //임시로 액티비티 연결해놓음, 추후에 매칭하기 정보 컨텍스트 넘겨줘야함
         matchFindButton = findViewById(R.id.matchFindButton);
         matchFindButton.setOnClickListener(v-> {
             Intent intent = new Intent(getApplicationContext(), MatchMatchingActivity.class);
+            intent.putExtra("requestInfo", new MatchRequestDTO("user1",
+                    "user1",
+                    "129.012175,35.151238",
+                    "129.0006581,35.146861",
+                    (short) 2,
+                    (short) 2));
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        switch (requestCode){
+            case 10000:
+                if(resultCode == RESULT_OK){
+                    String data = intent.getExtras().getString("data").substring(7);
+                    if(data != null){
+                        Log.i("주소검색", "data:"+data);
+                        myDestinationAddress = data;
+                    }
+                }
+        }
     }
 
     @Override
@@ -100,6 +107,21 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
         locationOverlay.setVisible(true);
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+        //마커 띄우는 테스트 삭제예정
+        Marker marker = new Marker();
+        marker.setIcon(OverlayImage.fromResource(R.drawable.map_opponent_icon));
+        marker.setPosition(new LatLng(35.1455966, 129.0091051));
+        marker.setMap(naverMap);
+        InfoWindow infoWindow = new InfoWindow();
+        infoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(MatchMainActivity.this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return "홍길동";
+            }
+        });
+        infoWindow.open(marker);
     }
 
     @Override
@@ -125,5 +147,12 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    public static void destroyActivity() {
+        if (instance != null) {
+            instance.finish();
+            instance = null;
+        }
     }
 }
