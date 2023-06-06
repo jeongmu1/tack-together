@@ -20,6 +20,7 @@ import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
 import com.dnlab.tack_together.api.dto.matched.DropOffNotificationDTO;
 import com.dnlab.tack_together.api.dto.matched.DropOffRequestDTO;
 import com.dnlab.tack_together.api.dto.matched.SettlementReceivedRequestDTO;
+import com.dnlab.tack_together.api.dto.wrapper.DropOffNotificationWrapperDTO;
 import com.dnlab.tack_together.api.dto.wrapper.SettlementReceivedRequestWrapperDTO;
 import com.dnlab.tack_together.service.MatchedService;
 import com.google.gson.Gson;
@@ -40,7 +41,6 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
     private TextView estimatedFare;
     private StompClient stompClient;
     private BroadcastReceiver messageReceiver;
-    private Button ridingEndButton;
     private NaverMap naverMap;
     private FusedLocationSource locationSource;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
@@ -49,6 +49,7 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
     private LinearLayout ridingLayout;
     private LinearLayout waitingLayout;
     private SettlementReceivedRequestDTO settlementReceivedRequestDTO;
+    private boolean opponentDropOffed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
         estimatedTotalFare = findViewById(R.id.ridingEstimatedTotalFare);
         estimatedFare = findViewById(R.id.ridingEstimatedFare);
 
-        ridingEndButton = findViewById(R.id.ridingEndButton);
+        Button ridingEndButton = findViewById(R.id.ridingEndButton);
         ridingEndButton.setOnClickListener(this::handleDropOff);
 
         ridingLayout = findViewById(R.id.ridingButtonLayout);
@@ -131,7 +132,7 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
     private void startNextActivity() {
         Intent nextIntent = new Intent(this, MatchEndActivity.class);
         nextIntent.putExtra("destination", destination);
-        nextIntent.putExtra("settlementReceivedRequestDTO", settlementReceivedRequestDTO);
+        nextIntent.putExtra("settlementReceivedRequest", settlementReceivedRequestDTO);
         nextIntent.putExtra("matchResultInfo", matchResultInfo);
         startActivity(nextIntent);
         finish();
@@ -144,9 +145,19 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
                 String message = intent.getStringExtra("message");
 
                 if (!destination) {
-                    settlementReceivedRequestDTO = new Gson().fromJson(message, SettlementReceivedRequestWrapperDTO.class)
-                            .getPayload();
-                    startNextActivity();
+                    if (opponentDropOffed) {
+                        settlementReceivedRequestDTO = new Gson().fromJson(message, SettlementReceivedRequestWrapperDTO.class).getPayload();
+                        startNextActivity();
+                    } else {
+                        DropOffNotificationDTO dropOffNotificationDTO = new Gson().fromJson(message, DropOffNotificationWrapperDTO.class)
+                                .getPayload();
+
+                        if (sessionId.equals(dropOffNotificationDTO.getSessionId())) {
+                            opponentRidingStatus.setText("하차");
+                            opponentDropOffed = true;
+                        }
+                    }
+
                 } else {
                     opponentRidingStatus.setText("하차");
                 }
