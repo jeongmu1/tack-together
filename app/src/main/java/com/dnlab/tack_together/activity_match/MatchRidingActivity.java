@@ -34,8 +34,8 @@ import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.LocationOverlay;
-import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.PolylineOverlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
@@ -138,9 +138,9 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
                 .include(destinationLatLng)
                 .build().getCenter()));
 
-        printMarker(origin);
-        printMarker(waypoint);
-        printMarker(destination);
+        createInfoWindow("출발", originLatLng);
+        createInfoWindow("경유", waypointLatLng);
+        createInfoWindow("도착", destinationLatLng);
 
         PolylineOverlay polyline = new PolylineOverlay();
         polyline.setCoords(Arrays.asList(
@@ -152,10 +152,17 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
         polyline.setMap(naverMap);
     }
 
-    private void printMarker(LocationDTO location) {
-        Marker marker = new Marker();
-        marker.setPosition(new LatLng(location.getY(), location.getX()));
-        marker.setMap(naverMap);
+    private void createInfoWindow(String s, LatLng latLng) {
+        InfoWindow infoWindow = new InfoWindow(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return s;
+            }
+        });
+
+        infoWindow.setPosition(latLng);
+        infoWindow.open(naverMap);
     }
 
     private void handleDropOff(View view) {
