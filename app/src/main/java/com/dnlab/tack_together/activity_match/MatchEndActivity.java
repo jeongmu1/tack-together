@@ -28,7 +28,7 @@ import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.PolylineOverlay;
 
 import java.util.Arrays;
@@ -205,9 +205,9 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
         LatLng waypoint = parseStringLocation(routeInfoDTO.getWaypoint());
         LatLng destination = parseStringLocation(routeInfoDTO.getDestination());
 
-        printMarkerOfLocation(origin);
-        printMarkerOfLocation(waypoint);
-        printMarkerOfLocation(destination);
+        createInfoWindow("출발", origin);
+        createInfoWindow("경유", waypoint);
+        createInfoWindow("도착", destination);
 
         CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLngBounds.Builder()
                 .include(origin)
@@ -226,10 +226,17 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
         polyline.setMap(naverMap);
     }
 
-    private void printMarkerOfLocation(LatLng location) {
-        Marker marker = new Marker();
-        marker.setPosition(location);
-        marker.setMap(naverMap);
+    private void createInfoWindow(String s, LatLng latLng) {
+        InfoWindow infoWindow = new InfoWindow(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return s;
+            }
+        });
+
+        infoWindow.setPosition(latLng);
+        infoWindow.open(naverMap);
     }
 
     private LatLng parseStringLocation(String location) {

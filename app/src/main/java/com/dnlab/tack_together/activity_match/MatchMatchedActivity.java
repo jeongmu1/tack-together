@@ -26,9 +26,7 @@ import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.ReverseGeoDocumentDTO
 import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.KakaoReverseGeoResponseDTO;
 import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.ReverseGeoRoadAddressDTO;
 import com.dnlab.tack_together.api.dto.route.LocationDTO;
-import com.dnlab.tack_together.api.dto.route.RoadDTO;
 import com.dnlab.tack_together.api.dto.route.RouteDTO;
-import com.dnlab.tack_together.api.dto.route.SectionDTO;
 import com.dnlab.tack_together.api.dto.wrapper.MatchResponseWrapperDTO;
 import com.dnlab.tack_together.common.status.MatchingStatus;
 import com.dnlab.tack_together.retrofit.kakaogeo.KakaoGeoAPI;
@@ -41,10 +39,10 @@ import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.PathOverlay;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -156,13 +154,27 @@ public class MatchMatchedActivity extends AppCompatActivity implements OnMapRead
             LocationDTO waypoint = routeDTO.getSummary().getWaypoints().stream().findFirst().orElse(null);
             LocationDTO destination = routeDTO.getSummary().getDestination();
 
-            printMarker(origin);
-            printMarker(waypoint);
-            printMarker(destination);
+            createInfoWindow("출발", new LatLng(origin.getY(), origin.getX()));
             assert waypoint != null;
+            createInfoWindow("경유", new LatLng(waypoint.getY(), waypoint.getX()));
+            createInfoWindow("도착", new LatLng(destination.getY(), destination.getX()));
+
             setCamera(origin, waypoint, destination);
             setDirectionLines(routeDTO);
         });
+    }
+
+    private void createInfoWindow(String s, LatLng latLng) {
+        InfoWindow infoWindow = new InfoWindow(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return s;
+            }
+        });
+
+        infoWindow.setPosition(latLng);
+        infoWindow.open(naverMap);
     }
 
     private void setDirectionLines(RouteDTO routeDTO) {
@@ -192,14 +204,6 @@ public class MatchMatchedActivity extends AppCompatActivity implements OnMapRead
 
         CameraUpdate cameraUpdate = CameraUpdate.scrollTo(bounds.getCenter());
         naverMap.moveCamera(cameraUpdate);
-    }
-
-    private void printMarker(LocationDTO location) {
-        if (location != null) {
-            Marker marker = new Marker();
-            marker.setPosition(new LatLng(location.getY(), location.getX()));
-            marker.setMap(naverMap);
-        }
     }
 
     private void setTextViews() {
