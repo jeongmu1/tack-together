@@ -42,6 +42,8 @@ import retrofit2.internal.EverythingIsNonNull;
 import ua.naiksoftware.stomp.StompClient;
 
 public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private boolean mapReady = false;
+    private RouteInfoDTO routeInfoDTO = null;
     private SettlementReceivedRequestDTO settlementReceivedRequestDTO;
     private boolean destination;
     private SettlementInfoDTO settlementInfo;
@@ -105,6 +107,10 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
+        this.mapReady = true;
+        if (routeInfoDTO != null) {
+            setMapView(routeInfoDTO);
+        }
     }
 
     private void setViews() {
@@ -209,20 +215,20 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
         createInfoWindow("경유", waypoint);
         createInfoWindow("도착", destination);
 
-//        naverMap.moveCamera(CameraUpdate.scrollTo(new LatLngBounds.Builder()
-//                .include(origin)
-//                .include(waypoint)
-//                .include(destination)
-//                .build().getCenter()));
-//
-//        PolylineOverlay polyline = new PolylineOverlay();
-//        polyline.setCoords(Arrays.asList(
-//                origin,
-//                waypoint,
-//                destination
-//        ));
-//        polyline.setPattern(10, 10);
-//        polyline.setMap(naverMap);
+        naverMap.moveCamera(CameraUpdate.scrollTo(new LatLngBounds.Builder()
+                .include(origin)
+                .include(waypoint)
+                .include(destination)
+                .build().getCenter()));
+
+        PolylineOverlay polyline = new PolylineOverlay();
+        polyline.setCoords(Arrays.asList(
+                origin,
+                waypoint,
+                destination
+        ));
+        polyline.setPattern(10, 10);
+        polyline.setMap(naverMap);
     }
 
     private void createInfoWindow(String s, LatLng latLng) {
@@ -262,7 +268,7 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
 
         endButton.setOnClickListener(this::handleFinishSettlement);
 
-        setMapView(settlementReceivedRequestDTO.getRouteInfo());
+        routeInfoDTO = settlementReceivedRequestDTO.getRouteInfo();
     }
 
     private void handleFinishSettlement(View view) {
