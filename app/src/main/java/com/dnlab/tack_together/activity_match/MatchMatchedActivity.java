@@ -26,6 +26,7 @@ import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.ReverseGeoDocumentDTO
 import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.KakaoReverseGeoResponseDTO;
 import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.ReverseGeoRoadAddressDTO;
 import com.dnlab.tack_together.api.dto.route.LocationDTO;
+import com.dnlab.tack_together.api.dto.route.RoadDTO;
 import com.dnlab.tack_together.api.dto.route.RouteDTO;
 import com.dnlab.tack_together.api.dto.route.SectionDTO;
 import com.dnlab.tack_together.api.dto.wrapper.MatchResponseWrapperDTO;
@@ -46,6 +47,8 @@ import com.naver.maps.map.overlay.PathOverlay;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -164,33 +167,13 @@ public class MatchMatchedActivity extends AppCompatActivity implements OnMapRead
 
     private void setDirectionLines(RouteDTO routeDTO) {
         PathOverlay path = new PathOverlay();
-        List<LatLng> latLngs = new ArrayList<>();
-
-        List<SectionDTO> sections = routeDTO.getSections();
-        sections.forEach(section -> section.getRoads().forEach(
-                road -> {
-                    List<Double> vertexes = road.getVertexes();
-
-                    List<Double> xCoords = new ArrayList<>();
-                    List<Double> yCoords = new ArrayList<>();
-                    for (int i = 0; i < vertexes.size(); i++) {
-                        if (i == 0) {
-                            yCoords.add(vertexes.get(i));
-                            continue;
-                        }
-
-                        if (i % 2 == 0) {
-                            yCoords.add(vertexes.get(i));
-                        } else {
-                            xCoords.add(vertexes.get(i));
-                        }
-                    }
-
-                    for (int i = 0; i < xCoords.size(); i++) {
-                        latLngs.add(new LatLng(xCoords.get(i), yCoords.get(i)));
-                    }
-                }
-        ));
+        List<LatLng> latLngs = routeDTO.getSections().stream()
+                .flatMap(section -> section.getRoads().stream())
+                .flatMap(road -> IntStream.range(0, road.getVertexes().size())
+                        .filter(i -> i % 2 == 0)
+                        .mapToObj(i -> new LatLng(road.getVertexes().get(i + 1), road.getVertexes().get(i)))
+                )
+                .collect(Collectors.toList());
 
         path.setCoords(latLngs);
         path.setColor(ContextCompat.getColor(this, R.color.lightBlue));
