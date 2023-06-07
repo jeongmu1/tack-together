@@ -209,21 +209,20 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
         createInfoWindow("경유", waypoint);
         createInfoWindow("도착", destination);
 
-        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLngBounds.Builder()
-                .include(origin)
-                .include(waypoint)
-                .include(destination)
-                .build().getCenter());
-        naverMap.moveCamera(cameraUpdate);
-
-        PolylineOverlay polyline = new PolylineOverlay();
-        polyline.setCoords(Arrays.asList(
-                origin,
-                waypoint,
-                destination
-        ));
-        polyline.setPattern(10, 10);
-        polyline.setMap(naverMap);
+//        naverMap.moveCamera(CameraUpdate.scrollTo(new LatLngBounds.Builder()
+//                .include(origin)
+//                .include(waypoint)
+//                .include(destination)
+//                .build().getCenter()));
+//
+//        PolylineOverlay polyline = new PolylineOverlay();
+//        polyline.setCoords(Arrays.asList(
+//                origin,
+//                waypoint,
+//                destination
+//        ));
+//        polyline.setPattern(10, 10);
+//        polyline.setMap(naverMap);
     }
 
     private void createInfoWindow(String s, LatLng latLng) {
@@ -241,6 +240,7 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
 
     private LatLng parseStringLocation(String location) {
         String[] stringLocations = location.split(",");
+        Log.d(TAG, "location: " + Arrays.toString(stringLocations));
         return new LatLng(Double.parseDouble(stringLocations[1]), Double.parseDouble(stringLocations[0]));
     }
 
