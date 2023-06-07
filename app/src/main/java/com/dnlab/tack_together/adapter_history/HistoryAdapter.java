@@ -44,11 +44,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return viewHolder;
     }
 
-//    @Override
-//    public void onBindViewHolder(HistoryViewHolder holder, int id) {
-//        holder.textView.setText(historyList.toString());
-//    }
-
     public void onBindViewHolder(@NonNull HistoryAdapter.HistoryViewHolder holder, int id) {
         String text = String.valueOf(historyList.get(id));
         holder.textView.setText(text);

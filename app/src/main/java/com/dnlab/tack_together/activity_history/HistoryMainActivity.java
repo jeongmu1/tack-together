@@ -48,11 +48,6 @@ public class HistoryMainActivity extends AppCompatActivity {
         HistoryAdapter historyAdapter = new HistoryAdapter(fetchHistorySummaries());
         recyclerView.setAdapter(historyAdapter); //Adapter 설정
 
-//        recyclerView = binding.historySummaryItems;
-//        layoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
-//        mAdapter = new HistoryAdapter(historySummaryListDTOList);
-//        recyclerView.setAdapter(mAdapter);
     }
     private List<HistorySummaryListDTO> fetchHistorySummaries() {
         List<HistorySummaryListDTO> historyData = new ArrayList<>();
