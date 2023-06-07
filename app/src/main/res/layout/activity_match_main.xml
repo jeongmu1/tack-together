@@ -7,16 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".activity_match.MatchMainActivity">
 
-    <!--    <ImageView-->
-    <!--        android:id="@+id/imageViewTemp"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/destinationLayout"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/titleBarLayout"-->
-    <!--        tools:srcCompat="@drawable/mappreview" />-->
-
     <com.naver.maps.map.MapView
         android:id="@+id/matchMainMapView"
         android:layout_width="0dp"
@@ -115,22 +105,29 @@
 
         <!-- 좁음, 보통, 넓게를 선택할 수 있는 버튼 -->
         <RadioGroup
+            android:id="@+id/originRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="right">
 
             <RadioButton
+                android:id="@+id/originNarrow"
+                android:tag="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="좁음" />
 
             <RadioButton
+                android:id="@+id/originNormal"
+                android:tag="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="보통" />
 
             <RadioButton
+                android:id="@+id/originWide"
+                android:tag="3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="넓음" />
@@ -154,22 +151,29 @@
 
         <!-- 좁음, 보통, 넓게를 선택할 수 있는 버튼 -->
         <RadioGroup
+            android:id="@+id/destinationRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="right">
 
             <RadioButton
+                android:id="@+id/destinationNarrow"
+                android:tag="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="좁음" />
 
             <RadioButton
+                android:id="@+id/destinationNormal"
+                android:tag="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="보통" />
 
             <RadioButton
+                android:id="@+id/destinationWide"
+                android:tag="3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="넓음" />

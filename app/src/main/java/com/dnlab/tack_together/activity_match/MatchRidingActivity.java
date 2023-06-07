@@ -20,16 +20,26 @@ import com.dnlab.tack_together.api.dto.match.MatchResultInfoDTO;
 import com.dnlab.tack_together.api.dto.matched.DropOffNotificationDTO;
 import com.dnlab.tack_together.api.dto.matched.DropOffRequestDTO;
 import com.dnlab.tack_together.api.dto.matched.SettlementReceivedRequestDTO;
+import com.dnlab.tack_together.api.dto.route.LocationDTO;
+import com.dnlab.tack_together.api.dto.route.RouteDTO;
+import com.dnlab.tack_together.api.dto.route.SummaryDTO;
 import com.dnlab.tack_together.api.dto.wrapper.DropOffNotificationWrapperDTO;
 import com.dnlab.tack_together.api.dto.wrapper.SettlementReceivedRequestWrapperDTO;
 import com.dnlab.tack_together.service.MatchedService;
 import com.google.gson.Gson;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.LocationOverlay;
+import com.naver.maps.map.overlay.PolylineOverlay;
 import com.naver.maps.map.util.FusedLocationSource;
+
+import java.util.Arrays;
 
 import ua.naiksoftware.stomp.StompClient;
 
@@ -107,6 +117,52 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
         LocationOverlay locationOverlay = naverMap.getLocationOverlay();
         locationOverlay.setVisible(true);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+        matchResultInfo.getRoutes().stream().findFirst()
+                .ifPresent(this::setMapViews);
+    }
+
+    private void setMapViews(RouteDTO routeDTO) {
+        SummaryDTO summary = routeDTO.getSummary();
+        LocationDTO origin = summary.getOrigin();
+        LocationDTO waypoint = summary.getWaypoints().stream().findAny().get();
+        LocationDTO destination = summary.getDestination();
+
+        LatLng originLatLng = new LatLng(origin.getY(), origin.getX());
+        LatLng waypointLatLng = new LatLng(waypoint.getY(), waypoint.getX());
+        LatLng destinationLatLng = new LatLng(destination.getY(), destination.getX());
+
+        naverMap.moveCamera(CameraUpdate.scrollTo(new LatLngBounds.Builder()
+                .include(originLatLng)
+                .include(waypointLatLng)
+                .include(destinationLatLng)
+                .build().getCenter()));
+
+        createInfoWindow("출발", originLatLng);
+        createInfoWindow("경유", waypointLatLng);
+        createInfoWindow("도착", destinationLatLng);
+
+        PolylineOverlay polyline = new PolylineOverlay();
+        polyline.setCoords(Arrays.asList(
+                originLatLng,
+                waypointLatLng,
+                destinationLatLng
+        ));
+        polyline.setPattern(10, 10);
+        polyline.setMap(naverMap);
+    }
+
+    private void createInfoWindow(String s, LatLng latLng) {
+        InfoWindow infoWindow = new InfoWindow(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return s;
+            }
+        });
+
+        infoWindow.setPosition(latLng);
+        infoWindow.open(naverMap);
     }
 
     private void handleDropOff(View view) {
@@ -134,6 +190,7 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
         nextIntent.putExtra("destination", destination);
         nextIntent.putExtra("settlementReceivedRequest", settlementReceivedRequestDTO);
         nextIntent.putExtra("matchResultInfo", matchResultInfo);
+        nextIntent.putExtra("sessionId", sessionId);
         startActivity(nextIntent);
         finish();
     }

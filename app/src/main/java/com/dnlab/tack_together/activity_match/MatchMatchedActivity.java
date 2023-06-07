@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -25,12 +26,27 @@ import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.ReverseGeoDocumentDTO
 import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.KakaoReverseGeoResponseDTO;
 import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.ReverseGeoRoadAddressDTO;
 import com.dnlab.tack_together.api.dto.route.LocationDTO;
+import com.dnlab.tack_together.api.dto.route.RouteDTO;
 import com.dnlab.tack_together.api.dto.wrapper.MatchResponseWrapperDTO;
 import com.dnlab.tack_together.common.status.MatchingStatus;
 import com.dnlab.tack_together.retrofit.kakaogeo.KakaoGeoAPI;
 import com.dnlab.tack_together.retrofit.kakaogeo.KakaoGeoRetrofitBuilder;
 import com.dnlab.tack_together.service.MatchingService;
 import com.google.gson.Gson;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
+import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.MapView;
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.InfoWindow;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.PathOverlay;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +54,7 @@ import retrofit2.Response;
 import retrofit2.internal.EverythingIsNonNull;
 import ua.naiksoftware.stomp.StompClient;
 
-public class MatchMatchedActivity extends AppCompatActivity {
+public class MatchMatchedActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private MatchResultInfoDTO matchResultInfoDTO;
     private static final String TAG = "MatchMatchedActivity";
@@ -49,11 +65,16 @@ public class MatchMatchedActivity extends AppCompatActivity {
     private boolean accepted = false;
     private boolean opponentAccepted = false;
     private String sessionId;
+    private NaverMap naverMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_matched);
+
+        MapView mapView = findViewById(R.id.matchedMapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
 
         stompClient = MatchingService.getStompClient();
         matchResultInfoDTO = (MatchResultInfoDTO) getIntent().getSerializableExtra("matchResultInfo");
@@ -117,6 +138,72 @@ public class MatchMatchedActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, new IntentFilter(BuildConfig.BROADCAST_CONTENT));
+    }
+
+    @Override
+    public void onMapReady(@NonNull NaverMap naverMap) {
+        this.naverMap = naverMap;
+        setMapView();
+    }
+
+    private void setMapView() {
+        Optional<RouteDTO> optionalRoute = matchResultInfoDTO.getRoutes().stream().findFirst();
+
+        optionalRoute.ifPresent(routeDTO -> {
+            LocationDTO origin = routeDTO.getSummary().getOrigin();
+            LocationDTO waypoint = routeDTO.getSummary().getWaypoints().stream().findFirst().orElse(null);
+            LocationDTO destination = routeDTO.getSummary().getDestination();
+
+            createInfoWindow("출발", new LatLng(origin.getY(), origin.getX()));
+            assert waypoint != null;
+            createInfoWindow("경유", new LatLng(waypoint.getY(), waypoint.getX()));
+            createInfoWindow("도착", new LatLng(destination.getY(), destination.getX()));
+
+            setCamera(origin, waypoint, destination);
+            setDirectionLines(routeDTO);
+        });
+    }
+
+    private void createInfoWindow(String s, LatLng latLng) {
+        InfoWindow infoWindow = new InfoWindow(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return s;
+            }
+        });
+
+        infoWindow.setPosition(latLng);
+        infoWindow.open(naverMap);
+    }
+
+    private void setDirectionLines(RouteDTO routeDTO) {
+        PathOverlay path = new PathOverlay();
+        List<LatLng> latLngs = routeDTO.getSections().stream()
+                .flatMap(section -> section.getRoads().stream())
+                .flatMap(road -> IntStream.range(0, road.getVertexes().size())
+                        .filter(i -> i % 2 == 0)
+                        .mapToObj(i -> new LatLng(road.getVertexes().get(i + 1), road.getVertexes().get(i)))
+                )
+                .collect(Collectors.toList());
+
+        path.setCoords(latLngs);
+        path.setColor(ContextCompat.getColor(this, R.color.lightBlue));
+        path.setWidth(25);
+        path.setOutlineWidth(0);
+
+        path.setMap(naverMap);
+    }
+
+    private void setCamera(LocationDTO location1, LocationDTO location2, LocationDTO location3) {
+        LatLngBounds bounds = new LatLngBounds.Builder()
+                .include(new LatLng(location1.getY(), location1.getX()))
+                .include(new LatLng(location2.getY(), location2.getX()))
+                .include(new LatLng(location3.getY(), location3.getX()))
+                .build();
+
+        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(bounds.getCenter());
+        naverMap.moveCamera(cameraUpdate);
     }
 
     private void setTextViews() {

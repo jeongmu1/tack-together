@@ -1,5 +1,6 @@
 package com.dnlab.tack_together.api.dto.matched;
 
+import com.dnlab.tack_together.api.dto.settlement.RouteInfoDTO;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -19,6 +20,8 @@ public class SettlementReceivedRequestDTO implements Serializable {
     private double waypointRate;
     @SerializedName("destinationRate")
     private double destinationRate;
+    @SerializedName("routeInfo")
+    private RouteInfoDTO routeInfo;
 
     @Override
     public String toString() {
@@ -30,10 +33,19 @@ public class SettlementReceivedRequestDTO implements Serializable {
                 ", accountInfo='" + accountInfo + '\'' +
                 ", waypointRate=" + waypointRate +
                 ", destinationRate=" + destinationRate +
+                ", routeInfo=" + routeInfo +
                 '}';
     }
 
     public SettlementReceivedRequestDTO() {
+    }
+
+    public RouteInfoDTO getRouteInfo() {
+        return routeInfo;
+    }
+
+    public void setRouteInfo(RouteInfoDTO routeInfo) {
+        this.routeInfo = routeInfo;
     }
 
     public double getDestinationRate() {
