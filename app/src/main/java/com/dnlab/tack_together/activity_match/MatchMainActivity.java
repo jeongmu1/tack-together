@@ -44,8 +44,8 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     private Marker destinationMarker;
     private static MatchMainActivity instance;
     private static final String TAG = "MatchMainActivity";
-    private short originRange;
-    private short destinationRange;
+    private short originRange = -1;
+    private short destinationRange = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +90,12 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
                 return;
             }
 
-            if (originRange == 0) {
+            if (originRange == -1) {
                 Toast.makeText(this, "검색범위를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (destinationRange == 0) {
+            if (destinationRange == -1) {
                 Toast.makeText(this, "목적지 범위를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }

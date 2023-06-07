@@ -1,10 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">택투게더</string>
-    <string name="app_name_eng">Tack-Together</string>
-    <string name="title_activity_scrolling">이용기록</string>
-    <string name="large_text">
-        "\n\n\n"
-        "이 부분에 item들을 띄워줘야함. how?"
-    </string>
-    <string name="action_settings">Settings</string>
+    <string name ="app_name">택투게더</string>
+    <string name ="app_name_eng">Tack-Together</string>
+    <string name ="large_text">TACK TOGETHER</string>
 </resources>
