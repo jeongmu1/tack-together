@@ -104,42 +104,15 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
                 Toast.makeText(this, "목적지 범위를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
+            Location origin = locationSource.getLastLocation();
+            assert origin != null;
+            String sOrigin = origin.getLongitude() + "," + origin.getLatitude();
 
-            Call<MemberInfoResponseDTO> call = RetrofitBuilder.getInstance(getApplicationContext())
-                    .getRetrofit()
-                    .create(AuthorizationAPI.class)
-                    .getMemberInfo();
+            String destination = myDestinationLocation.longitude + "," + myDestinationLocation.latitude;
 
-            call.enqueue(new Callback<>() {
-                @Override
-                @EverythingIsNonNull
-                public void onResponse(Call<MemberInfoResponseDTO> call, Response<MemberInfoResponseDTO> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        Location origin = locationSource.getLastLocation();
-                        assert origin != null;
-                        String sOrigin = origin.getLongitude() + "," + origin.getLatitude();
-
-                        String destination = myDestinationLocation.longitude + "," + myDestinationLocation.latitude;
-
-                        Intent intent = new Intent(getApplicationContext(), MatchMatchingActivity.class);
-                        intent.putExtra("requestInfo", new MatchRequestDTO(response.body().getUsername(),
-                                response.body().getNickname(),
-                                sOrigin,
-                                destination,
-                                originRange,
-                                destinationRange));
-                        startActivity(intent);
-                    }
-                }
-
-                @Override
-                @EverythingIsNonNull
-                public void onFailure(Call<MemberInfoResponseDTO> call, Throwable t) {
-                    Log.d(TAG, "통신실패");
-                }
-            });
-
+            Intent intent = new Intent(getApplicationContext(), MatchMatchingActivity.class);
+            intent.putExtra("requestInfo", new MatchRequestDTO(sOrigin, destination, originRange, destinationRange));
+            startActivity(intent);
         });
 
         destinationMarker = new Marker();

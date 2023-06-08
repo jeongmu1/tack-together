@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class MatchRequestDTO implements Serializable {
-    @SerializedName("username")
-    private String username;
-    @SerializedName("nickname")
-    private String nickname;
     @SerializedName("origin")
     private String origin;
     @SerializedName("destination")
@@ -21,9 +17,7 @@ public class MatchRequestDTO implements Serializable {
     @Override
     public String toString() {
         return "MatchRequestDTO{" +
-                "username='" + username + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", origin='" + origin + '\'' +
+                "origin='" + origin + '\'' +
                 ", destination='" + destination + '\'' +
                 ", originRange=" + originRange +
                 ", destinationRange=" + destinationRange +
@@ -33,29 +27,11 @@ public class MatchRequestDTO implements Serializable {
     public MatchRequestDTO() {
     }
 
-    public MatchRequestDTO(String username, String nickname, String origin, String destination, short originRange, short destinationRange) {
-        this.username = username;
-        this.nickname = nickname;
+    public MatchRequestDTO(String origin, String destination, short originRange, short destinationRange) {
         this.origin = origin;
         this.destination = destination;
         this.originRange = originRange;
         this.destinationRange = destinationRange;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getOrigin() {
