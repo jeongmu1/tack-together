@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dnlab.tack_together.R;
@@ -16,6 +17,7 @@ import com.dnlab.tack_together.activity_main.AddressApiActivity;
 import com.dnlab.tack_together.api.dto.auth.MemberInfoResponseDTO;
 import com.dnlab.tack_together.api.dto.kakaogeo.geo.GeoRoadAddressDTO;
 import com.dnlab.tack_together.api.dto.kakaogeo.geo.KakaoGeoResponseDTO;
+import com.dnlab.tack_together.api.dto.kakaogeo.reversegeo.KakaoReverseGeoResponseDTO;
 import com.dnlab.tack_together.api.dto.match.MatchRequestDTO;
 import com.dnlab.tack_together.retrofit.AuthorizationAPI;
 import com.dnlab.tack_together.retrofit.RetrofitBuilder;
@@ -44,8 +46,9 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
     private Marker destinationMarker;
     private static MatchMainActivity instance;
     private static final String TAG = "MatchMainActivity";
-    private short originRange;
-    private short destinationRange;
+    private short originRange = -1;
+    private short destinationRange = -1;
+    private TextView destinationTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +61,22 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        destinationTextView = findViewById(R.id.matchMainDestinationText);
+
         RadioGroup originRangeRadio = findViewById(R.id.originRange);
         originRangeRadio.setOnCheckedChangeListener(((group, checkedId) -> {
             Log.d(TAG, "originRangeRadio 변경 감지");
             RadioButton range = findViewById(checkedId);
-            Log.d(TAG,"originRange TAG: " + (String) range.getTag());
-            originRange = Short.parseShort((String)range.getTag());
+            Log.d(TAG, "originRange TAG: " + (String) range.getTag());
+            originRange = Short.parseShort((String) range.getTag());
         }));
 
         RadioGroup destinationRangeRadio = findViewById(R.id.destinationRange);
         destinationRangeRadio.setOnCheckedChangeListener(((group, checkedId) -> {
             Log.d(TAG, "destinationRangeRadio 변경 감지");
             RadioButton range = findViewById(checkedId);
-            Log.d(TAG,"destinationRange TAG: " + (String) range.getTag());
-            destinationRange = Short.parseShort((String)range.getTag());
+            Log.d(TAG, "destinationRange TAG: " + (String) range.getTag());
+            destinationRange = Short.parseShort((String) range.getTag());
         }));
 
         locationSource = new FusedLocationSource(this, 1000);
@@ -84,57 +89,30 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
 
         //임시로 액티비티 연결해놓음, 추후에 매칭하기 정보 컨텍스트 넘겨줘야함
         Button matchFindButton = findViewById(R.id.matchFindButton);
-        matchFindButton.setOnClickListener(v-> {
+        matchFindButton.setOnClickListener(v -> {
             if (myDestinationLocation == null) {
                 Toast.makeText(this, "목적지를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (originRange == 0) {
+            if (originRange == -1) {
                 Toast.makeText(this, "검색범위를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (destinationRange == 0) {
+            if (destinationRange == -1) {
                 Toast.makeText(this, "목적지 범위를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
+            Location origin = locationSource.getLastLocation();
+            assert origin != null;
+            String sOrigin = origin.getLongitude() + "," + origin.getLatitude();
 
-            Call<MemberInfoResponseDTO> call = RetrofitBuilder.getInstance(getApplicationContext())
-                    .getRetrofit()
-                    .create(AuthorizationAPI.class)
-                    .getMemberInfo();
+            String destination = myDestinationLocation.longitude + "," + myDestinationLocation.latitude;
 
-            call.enqueue(new Callback<>() {
-                @Override
-                @EverythingIsNonNull
-                public void onResponse(Call<MemberInfoResponseDTO> call, Response<MemberInfoResponseDTO> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        Location origin = locationSource.getLastLocation();
-                        assert origin != null;
-                        String sOrigin = origin.getLongitude() + "," + origin.getLatitude();
-
-                        String destination = myDestinationLocation.longitude + "," + myDestinationLocation.latitude;
-
-                        Intent intent = new Intent(getApplicationContext(), MatchMatchingActivity.class);
-                        intent.putExtra("requestInfo", new MatchRequestDTO(response.body().getUsername(),
-                                response.body().getNickname(),
-                                sOrigin,
-                                destination,
-                                originRange,
-                                destinationRange));
-                        startActivity(intent);
-                    }
-                }
-
-                @Override
-                @EverythingIsNonNull
-                public void onFailure(Call<MemberInfoResponseDTO> call, Throwable t) {
-                    Log.d(TAG, "통신실패");
-                }
-            });
-
+            Intent intent = new Intent(getApplicationContext(), MatchMatchingActivity.class);
+            intent.putExtra("requestInfo", new MatchRequestDTO(sOrigin, destination, originRange, destinationRange));
+            startActivity(intent);
         });
 
         destinationMarker = new Marker();
@@ -172,6 +150,8 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
                             naverMap.moveCamera(CameraUpdate.scrollTo(myDestinationLocation));
                             destinationMarker.setPosition(myDestinationLocation);
                             destinationMarker.setMap(naverMap);
+
+                            destinationTextView.setText(roadAddressDTO.getAddressName());
                         }
 
                     }
@@ -188,7 +168,7 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,  @NonNull int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (locationSource.onRequestPermissionsResult(
                 requestCode, permissions, grantResults)) {
             if (!locationSource.isActivated()) { // 권한 거부됨
@@ -199,6 +179,7 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
         super.onRequestPermissionsResult(
                 requestCode, permissions, grantResults);
     }
+
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
@@ -212,6 +193,40 @@ public class MatchMainActivity extends AppCompatActivity implements OnMapReadyCa
 
             destinationMarker.setPosition(myDestinationLocation);
             destinationMarker.setMap(naverMap);
+
+            destinationTextView.setText("...");
+            Call<KakaoReverseGeoResponseDTO> call = KakaoGeoRetrofitBuilder.getInstance()
+                    .getRetrofit()
+                    .create(KakaoGeoAPI.class)
+                    .requestReverseGeocoding(String.valueOf(myDestinationLocation.longitude),
+                            String.valueOf(myDestinationLocation.latitude));
+
+            call.enqueue(new Callback<>() {
+                @Override
+                @EverythingIsNonNull
+                public void onResponse(Call<KakaoReverseGeoResponseDTO> call, Response<KakaoReverseGeoResponseDTO> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            KakaoReverseGeoResponseDTO body = response.body();
+                            body.getDocuments().stream()
+                                    .findFirst()
+                                    .ifPresent(dto -> {
+                                        if (dto.getRoadAddress() != null) {
+                                            destinationTextView.setText(dto.getRoadAddress().getAddressName());
+                                        } else {
+                                            destinationTextView.setText(dto.getAddress().getAddressName());
+                                        }
+                                    });
+                        }
+                    }
+                }
+
+                @Override
+                @EverythingIsNonNull
+                public void onFailure(Call<KakaoReverseGeoResponseDTO> call, Throwable t) {
+                    Log.d(TAG, "통신 실패");
+                }
+            });
         }));
     }
 
