@@ -24,7 +24,7 @@ import retrofit2.Response;
 public class HistoryMainActivity extends AppCompatActivity {
     private ActivityHistoryMainBinding binding;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    HistoryAdapter adapter = new HistoryAdapter();
     private RecyclerView.LayoutManager layoutManager;
     private HistoryAPI historyAPI;
     private static final String TAG = "HistoryMainActivity";
@@ -58,7 +58,8 @@ public class HistoryMainActivity extends AppCompatActivity {
                     HistorySummaryListDTO historySummaryListDTO = response.body();
                     if (historySummaryListDTO != null) {
                         Log.i(TAG, "이용기록 출력");
-
+                        Log.i(TAG, "history Data : " + historyData.toString());
+                        Log.i(TAG, "historySummaryList : " + historySummaryListDTO);
                     } else {
                         Log.i(TAG, "이용기록 없습니다 출력");
                     }

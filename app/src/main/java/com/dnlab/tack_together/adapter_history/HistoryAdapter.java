@@ -18,6 +18,10 @@ import lombok.NonNull;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
     private ArrayList<HistoryItemActivity> historyItems = new ArrayList<>();
 
+    void addItem(HistoryItemActivity historyItem) {
+        historyItems.add(historyItem);
+    }
+
     @Override
     public int getItemCount() {
         return historyItems.size();
@@ -52,6 +56,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     //생성자
     public HistoryAdapter(List<HistoryItemActivity> historyListParam) {
         historyItems = (ArrayList<HistoryItemActivity>) historyListParam;
+    }
+
+    public HistoryAdapter() {
     }
 
     @Override
