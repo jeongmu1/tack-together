@@ -22,7 +22,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HistoryMainActivity extends AppCompatActivity {
-
     private ActivityHistoryMainBinding binding;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -37,7 +36,6 @@ public class HistoryMainActivity extends AppCompatActivity {
         historyAPI = RetrofitBuilder.getInstance(getApplicationContext()).getRetrofit().create(HistoryAPI.class);
 
         binding = ActivityHistoryMainBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
         setContentView(R.layout.activity_history_main);
 
         RecyclerView recyclerView = findViewById(R.id.history_summary_items);
@@ -49,8 +47,8 @@ public class HistoryMainActivity extends AppCompatActivity {
         recyclerView.setAdapter(historyAdapter); //Adapter 설정
 
     }
-    private List<HistorySummaryListDTO> fetchHistorySummaries() {
-        List<HistorySummaryListDTO> historyData = new ArrayList<>();
+    private List<HistoryItemActivity> fetchHistorySummaries() {
+        List<HistoryItemActivity> historyData = new ArrayList<>();
 
         Call<HistorySummaryListDTO> call = historyAPI.handleHistorySummaryList();
         call.enqueue(new Callback<>() {
