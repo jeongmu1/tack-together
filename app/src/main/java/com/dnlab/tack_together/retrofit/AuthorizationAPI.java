@@ -30,9 +30,6 @@ public interface AuthorizationAPI {
     @GET("/api/auth/check-username")
     Call<CheckUsernameResponseDTO> checkUsernameDuplicated(@Query("username") String username);
 
-    @GET("/api/auth/test-auth")
-    Call<TestTokenResponseDTO> testAuthentication();
-
     @GET("/api/auth/member-info")
     Call<MemberInfoResponseDTO> getMemberInfo();
 
