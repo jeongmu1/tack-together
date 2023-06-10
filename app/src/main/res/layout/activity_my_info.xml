@@ -27,8 +27,8 @@
     <!--            android:textStyle="bold" />-->
     <!--    </LinearLayout>-->
 
+
     <LinearLayout
-        android:id="@+id/myInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -40,133 +40,169 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:text="내 정보"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="" />
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/myInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:ems="10"
-            android:text="아이디"
-            android:inputType="text" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/myInfoUsernameText"
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="내 정보"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:ems="10"
+                android:text="아이디"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/myInfoUsernameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="15dp"
+                android:text="아이디"
+                android:textSize="20sp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/myInfoUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginBottom="5dp"
+                android:visibility="gone"
+                android:enabled="false"
+                android:textSize="20sp"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:ems="10"
+                android:text="이름"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/myInfoNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="15dp"
+                android:text="이름"
+                android:textSize="20sp"
+                android:ems="10"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/myInfoName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                android:ems="10"
+                android:inputType="text"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:ems="10"
+                android:text="닉네임"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/myInfoNicknameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="15dp"
+                android:text="닉네임"
+                android:textSize="20sp"
+                android:ems="10"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/myInfoNickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                android:ems="10"
+                android:inputType="text"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/myInfoPasswordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="15dp"
-            android:text="아이디"
-            android:textSize="20sp"
-            android:inputType="text" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <EditText
-            android:id="@+id/myInfoUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:layout_marginBottom="5dp"
-            android:visibility="gone"
-            android:enabled="false"
-            android:textSize="20sp"
-            android:inputType="text" />
+            <TextView
+                android:id="@+id/passwordText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:ems="10"
+                android:text="비밀번호"
+                android:inputType="text" />
 
-        <TextView
-            android:id="@+id/passwordText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:ems="10"
-            android:text="비밀번호"
-            android:inputType="text"
-            android:visibility="gone"/>
+            <EditText
+                android:id="@+id/myInfoPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                android:ems="10"
+                android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/myInfoPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textSize="20sp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/passwordTestText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:ems="10"
+                android:text="비밀번호 확인"
+                android:inputType="text" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:ems="10"
-            android:text="이름"
-            android:inputType="text" />
+            <EditText
+                android:id="@+id/myInfoPasswordTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                android:ems="10"
+                android:inputType="textPassword" />
 
-        <TextView
-            android:id="@+id/myInfoNameText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="15dp"
-            android:text="이름"
-            android:textSize="20sp"
-            android:ems="10"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/myInfoName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textSize="20sp"
-            android:ems="10"
-            android:inputType="text"
-            android:visibility="gone"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:ems="10"
-            android:text="닉네임"
-            android:inputType="text" />
-
-        <TextView
-            android:id="@+id/myInfoNicknameText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="15dp"
-            android:text="닉네임"
-            android:textSize="20sp"
-            android:ems="10"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/myInfoNickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textSize="20sp"
-            android:ems="10"
-            android:inputType="text"
-            android:visibility="gone"/>
-
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -180,7 +216,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginBottom="5dp"
                 android:textSize="20sp"
                 android:text="로그아웃" />
 
@@ -190,11 +225,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginBottom="5dp"
                 android:textSize="20sp"
                 android:text="수정하기" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/myInfoPasswordEditButton"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginBottom="5dp"
+            android:background="#00000000"
+            android:text="비밀번호변경하기"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
