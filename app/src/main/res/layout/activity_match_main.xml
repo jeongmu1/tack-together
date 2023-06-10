@@ -41,15 +41,6 @@
             android:textStyle="bold" />
 
 
-        <ImageButton
-            android:id="@+id/matchMainMenuButton"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="#00FFFFFF"
-            app:srcCompat="@drawable/ic_button_menu" />
-
-
     </LinearLayout>
 
 
