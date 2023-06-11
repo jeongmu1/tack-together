@@ -8,7 +8,7 @@ import java.util.List;
 public class HistorySummaryListDTO implements Serializable {
 
     @SerializedName("historySummaries")
-    private List<HistorySummaryDTO> historySummaryListDTO;
+    private List<HistorySummaryDTO> historySummaryDTOList;
 
     public HistorySummaryListDTO() {
     }
@@ -16,15 +16,15 @@ public class HistorySummaryListDTO implements Serializable {
     @Override
     public String toString() {
         return "HistorySummaryListDTO{" +
-                "historySummaryDTOS=" + historySummaryListDTO +
+                "historySummaryDTOList=" + historySummaryDTOList +
                 '}';
     }
 
-    public List<HistorySummaryDTO> getHistorySummaryListDTO() {
-        return historySummaryListDTO;
+    public List<HistorySummaryDTO> getHistorySummaryDTOList() {
+        return historySummaryDTOList;
     }
 
-    public void setHistorySummaryListDTO(List<HistorySummaryDTO> historySummaryListDTO) {
-        this.historySummaryListDTO = historySummaryListDTO;
+    public void setHistorySummaryDTOList(List<HistorySummaryDTO> historySummaryDTOList) {
+        this.historySummaryDTOList = historySummaryDTOList;
     }
 }
