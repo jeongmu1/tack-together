@@ -121,7 +121,7 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
         Call<SettlementInfoDTO> call = RetrofitBuilder.getInstance(getApplicationContext())
                 .getRetrofit()
                 .create(SettlementAPI.class)
-                .getSettlementInfo();
+                .getSettlementInfo(sessionId);
 
         call.enqueue(getCallBackOfSettlementInfo());
 
@@ -181,9 +181,9 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
                                 return;
                             }
                             int totalFare = Integer.parseInt(trimmedString);
-                            int fare = (int) ((double) totalFare * (settlementInfo.getPaymentRate() / 100));
-                            myFare.setText(String.valueOf(fare));
-                            opponentFare.setText(String.valueOf(totalFare - fare));
+                            int opponentPaymentAmount = (int) ((double) totalFare * (settlementInfo.getOpponentPaymentRate() / 100));
+                            myFare.setText(String.valueOf(totalFare - opponentPaymentAmount));
+                            opponentFare.setText(String.valueOf(opponentPaymentAmount));
                         }
 
                         @Override
