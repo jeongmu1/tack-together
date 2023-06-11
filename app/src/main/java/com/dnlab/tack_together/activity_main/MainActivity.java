@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     CardView matchMenuCardButton;
     CardView historyMenuCardButton;
+    CardView myInfoButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
         historyMenuCardButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), HistoryMainActivity.class);
+            startActivity(intent);
+        });
+
+        myInfoButton = findViewById(R.id.mypageButton);
+        myInfoButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MyInfoActivity.class);
             startActivity(intent);
         });
 

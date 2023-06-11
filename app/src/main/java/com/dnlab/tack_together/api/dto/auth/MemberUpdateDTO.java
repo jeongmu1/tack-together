@@ -7,6 +7,14 @@ public class MemberUpdateDTO implements Serializable {
     private String name;
     private String password;
 
+    public MemberUpdateDTO(){};
+
+    public MemberUpdateDTO(String nickname, String name, String password){
+        this.nickname = nickname;
+        this.name = name;
+        this.password = password;
+    };
+
     @Override
     public String toString() {
         return "MemberUpdateDTO{" +
