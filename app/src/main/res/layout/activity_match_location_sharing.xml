@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:text="gaejaru"/>
+                android:text=""/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -165,6 +165,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:text="확인"
+                style="@style/defaultButton"
                 android:padding="20dp" />
 
         </LinearLayout>

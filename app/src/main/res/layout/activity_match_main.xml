@@ -188,6 +188,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"
+            style="@style/defaultButton"
             android:text="매칭 찾기" />
 
     </LinearLayout>
