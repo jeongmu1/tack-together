@@ -8,32 +8,30 @@ public class HistorySummaryDTO implements Serializable {
 
     @SerializedName("id")
     private long id;
-    @SerializedName("date")
-    private long date;
+    @SerializedName("createTime")
+    private long createTime;
     @SerializedName("origin")
     private String origin;
     @SerializedName("destination")
     private String destination;
+    @SerializedName("waypoints")
+    private String waypoints;
     @SerializedName("paymentAmount")
     private int paymentAmount;
+
+    public HistorySummaryDTO() {
+    }
 
     @Override
     public String toString() {
         return "HistorySummaryDTO{" +
                 "id=" + id +
-                ", date=" + date +
+                ", createTime=" + createTime +
                 ", origin='" + origin + '\'' +
                 ", destination='" + destination + '\'' +
+                ", waypoints='" + waypoints + '\'' +
                 ", paymentAmount=" + paymentAmount +
                 '}';
-    }
-
-    public HistorySummaryDTO(long id, long date, String origin, String destination, int paymentAmount) {
-        this.id = id;
-        this.date = date;
-        this.origin = origin;
-        this.destination = destination;
-        this.paymentAmount = paymentAmount;
     }
 
     public long getId() {
@@ -44,12 +42,12 @@ public class HistorySummaryDTO implements Serializable {
         this.id = id;
     }
 
-    public long getDate() {
-        return date;
+    public long getCreateTime() {
+        return createTime;
     }
 
-    public void setDate(long date) {
-        this.date = date;
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 
     public String getOrigin() {
@@ -66,6 +64,14 @@ public class HistorySummaryDTO implements Serializable {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public String getWaypoints() {
+        return waypoints;
+    }
+
+    public void setWaypoints(String waypoints) {
+        this.waypoints = waypoints;
     }
 
     public int getPaymentAmount() {

@@ -42,7 +42,6 @@ import retrofit2.internal.EverythingIsNonNull;
 import ua.naiksoftware.stomp.StompClient;
 
 public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private boolean mapReady = false;
     private RouteInfoDTO routeInfoDTO = null;
     private SettlementReceivedRequestDTO settlementReceivedRequestDTO;
     private boolean destination;
@@ -107,7 +106,6 @@ public class MatchEndActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
-        this.mapReady = true;
         if (routeInfoDTO != null) {
             setMapView(routeInfoDTO);
         }

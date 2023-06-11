@@ -7,8 +7,6 @@ import java.io.Serializable;
 public class HistoryDetailDTO implements Serializable {
     @SerializedName("id")
     private long id;
-    @SerializedName("date")
-    private long date;
     @SerializedName("origin")
     private String origin;
     @SerializedName("waypoints")
@@ -17,8 +15,12 @@ public class HistoryDetailDTO implements Serializable {
     private String destination;
     @SerializedName("createTime")
     private long createTime;
+    @SerializedName("distance")
+    private int distance;
     @SerializedName("dropOffTime")
     private long dropOffTime;
+    @SerializedName("matchEndTime")
+    private long matchEndTime;
     @SerializedName("opponentMember")
     private String opponentMember;
     @SerializedName("paymentAmount")
@@ -28,27 +30,19 @@ public class HistoryDetailDTO implements Serializable {
     public String toString() {
         return "HistoryDetailDTO{" +
                 "id=" + id +
-                ", date=" + date +
                 ", origin='" + origin + '\'' +
                 ", waypoints='" + waypoints + '\'' +
                 ", destination='" + destination + '\'' +
                 ", createTime=" + createTime +
+                ", distance=" + distance +
                 ", dropOffTime=" + dropOffTime +
+                ", matchEndTime=" + matchEndTime +
                 ", opponentMember='" + opponentMember + '\'' +
                 ", paymentAmount=" + paymentAmount +
                 '}';
     }
 
-    public HistoryDetailDTO(long id, long date, String origin, String waypoints, String destination, long createTime, long dropOffTime, String opponentMember, int paymentAmount) {
-        this.id = id;
-        this.date = date;
-        this.origin = origin;
-        this.waypoints = waypoints;
-        this.destination = destination;
-        this.createTime = createTime;
-        this.dropOffTime = dropOffTime;
-        this.opponentMember = opponentMember;
-        this.paymentAmount = paymentAmount;
+    public HistoryDetailDTO() {
     }
 
     public long getId() {
@@ -57,14 +51,6 @@ public class HistoryDetailDTO implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getDate() {
-        return date;
-    }
-
-    public void setDate(long date) {
-        this.date = date;
     }
 
     public String getOrigin() {
@@ -99,12 +85,28 @@ public class HistoryDetailDTO implements Serializable {
         this.createTime = createTime;
     }
 
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
     public long getDropOffTime() {
         return dropOffTime;
     }
 
     public void setDropOffTime(long dropOffTime) {
         this.dropOffTime = dropOffTime;
+    }
+
+    public long getMatchEndTime() {
+        return matchEndTime;
+    }
+
+    public void setMatchEndTime(long matchEndTime) {
+        this.matchEndTime = matchEndTime;
     }
 
     public String getOpponentMember() {

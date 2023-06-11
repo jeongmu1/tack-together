@@ -1,5 +1,7 @@
 package com.dnlab.tack_together.adapter_history;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,69 +9,70 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dnlab.tack_together.R;
-import com.dnlab.tack_together.activity_history.HistoryItemActivity;
-import com.dnlab.tack_together.api.dto.history.HistorySummaryListDTO;
+import com.dnlab.tack_together.api.dto.history.HistorySummaryDTO;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
-
-import lombok.NonNull;
+import java.util.Locale;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
-    private ArrayList<HistoryItemActivity> historyItems = new ArrayList<>();
+    private List<HistorySummaryDTO> historySummaryDTOS;
+    private Context context;
 
-    void addItem(HistoryItemActivity historyItem) {
-        historyItems.add(historyItem);
+    public HistoryAdapter(List<HistorySummaryDTO> historySummaryDTOS, Context context) {
+        this.historySummaryDTOS = historySummaryDTOS;
+        this.context = context;
+    }
+
+    public void setHistorySummaryDTOS(List<HistorySummaryDTO> historySummaryDTOS) {
+        this.historySummaryDTOS = historySummaryDTOS;
+    }
+
+    @NonNull
+    @Override
+    public HistoryAdapter.HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.activity_history_item, viewGroup, false);
+        return new HistoryViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull HistoryViewHolder historyViewHolder, int i) {
+        HistorySummaryDTO summaryDTO = historySummaryDTOS.get(i);
+
+        historyViewHolder.createTimeView.setText(toTimeStamp(summaryDTO.getCreateTime()));
+        historyViewHolder.originView.setText(summaryDTO.getOrigin());
+        historyViewHolder.waypointsView.setText(summaryDTO.getWaypoints());
+        historyViewHolder.destinationView.setText(summaryDTO.getDestination());
+        historyViewHolder.paymentAmountView.setText(String.valueOf(summaryDTO.getPaymentAmount()));
     }
 
     @Override
     public int getItemCount() {
-        return historyItems.size();
+        return historySummaryDTOS.size();
     }
 
-    //뷰 홀더 클래스
+    private String toTimeStamp(long num){
+        Timestamp toTimeStamp = new Timestamp(num);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
+        return dateFormat.format(toTimeStamp) ;
+    }
+
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {
-        public TextView dateView;
+        public TextView createTimeView;
         public TextView originView;
         public TextView destinationView;
-        public TextView paymentView;
+        public TextView waypointsView;
+        public TextView paymentAmountView;
 
+        public HistoryViewHolder(@NonNull View itemView) {
+            super(itemView);
 
-        public HistoryViewHolder(View v) {
-            super(v);
-
-            dateView = v.findViewById(R.id.history_summary_date_item);
-            originView = v.findViewById(R.id.history_summary_origin_item);
-            destinationView = v.findViewById(R.id.history_summary_destination_item);
-            paymentView = v.findViewById(R.id.history_summary_payment_item);
+            createTimeView = itemView.findViewById(R.id.history_summary_date_item);
+            originView = itemView.findViewById(R.id.history_summary_origin_item);
+            destinationView = itemView.findViewById(R.id.history_summary_destination_item);
+            waypointsView = itemView.findViewById(R.id.history_summary_waypoints_item);
+            paymentAmountView = itemView.findViewById(R.id.history_summary_payment_item);
         }
-
-        void setItem(HistoryItemActivity item) {
-            dateView.setText((int) item.getDate());
-            originView.setText(item.getOrigin());
-            destinationView.setText(item.getDestination());
-            paymentView.setText(item.getPaymentAmount());
-
-        }
-    }
-
-    //생성자
-    public HistoryAdapter(List<HistoryItemActivity> historyListParam) {
-        historyItems = (ArrayList<HistoryItemActivity>) historyListParam;
-    }
-
-    public HistoryAdapter() {
-    }
-
-    @Override
-    public HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {//ViewHolder 객체 생성 해서 리턴 <- 뷰 홀더 만들어 지는 시점에 호출 되는 메서드. 재사용 시 호출 X
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.activity_history_item, parent, false);
-        return new HistoryViewHolder(v); //itemView 가지고 있는 뷰 홀더 만들어서 반환
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull HistoryViewHolder holder, int id) {
-        holder.setItem(historyItems.get(id));
     }
 }
