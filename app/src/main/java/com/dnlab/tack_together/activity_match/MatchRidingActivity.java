@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -192,6 +193,7 @@ public class MatchRidingActivity extends AppCompatActivity implements OnMapReady
         nextIntent.putExtra("matchResultInfo", matchResultInfo);
         nextIntent.putExtra("sessionId", sessionId);
         startActivity(nextIntent);
+        Log.d("MatchRidingActivity", "정산 액티비티 호출됨");
         finish();
     }
 

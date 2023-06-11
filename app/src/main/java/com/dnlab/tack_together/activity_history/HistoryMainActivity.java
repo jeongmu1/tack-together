@@ -22,10 +22,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HistoryMainActivity extends AppCompatActivity {
-
     private ActivityHistoryMainBinding binding;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    HistoryAdapter adapter = new HistoryAdapter();
     private RecyclerView.LayoutManager layoutManager;
     private HistoryAPI historyAPI;
     private static final String TAG = "HistoryMainActivity";
@@ -37,7 +36,6 @@ public class HistoryMainActivity extends AppCompatActivity {
         historyAPI = RetrofitBuilder.getInstance(getApplicationContext()).getRetrofit().create(HistoryAPI.class);
 
         binding = ActivityHistoryMainBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
         setContentView(R.layout.activity_history_main);
 
         RecyclerView recyclerView = findViewById(R.id.history_summary_items);
@@ -49,8 +47,8 @@ public class HistoryMainActivity extends AppCompatActivity {
         recyclerView.setAdapter(historyAdapter); //Adapter 설정
 
     }
-    private List<HistorySummaryListDTO> fetchHistorySummaries() {
-        List<HistorySummaryListDTO> historyData = new ArrayList<>();
+    private List<HistoryItemActivity> fetchHistorySummaries() {
+        List<HistoryItemActivity> historyData = new ArrayList<>();
 
         Call<HistorySummaryListDTO> call = historyAPI.handleHistorySummaryList();
         call.enqueue(new Callback<>() {
@@ -60,7 +58,8 @@ public class HistoryMainActivity extends AppCompatActivity {
                     HistorySummaryListDTO historySummaryListDTO = response.body();
                     if (historySummaryListDTO != null) {
                         Log.i(TAG, "이용기록 출력");
-
+                        Log.i(TAG, "history Data : " + historyData.toString());
+                        Log.i(TAG, "historySummaryList : " + historySummaryListDTO);
                     } else {
                         Log.i(TAG, "이용기록 없습니다 출력");
                     }
