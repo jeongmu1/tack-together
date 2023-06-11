@@ -11,14 +11,33 @@
         android:padding="16dp"
         tools:ignore="MissingConstraints" >
 
+        <TextView
+            android:id="@+id/history_summary_date_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="날짜"
+            android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/history_summary_item"
-            android:layout_width="0dp"
+            android:id="@+id/history_summary_origin_item"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            tools:ignore="MissingConstraints" />
+            android:text="출발지"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/history_summary_destination_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="도착지"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/history_summary_payment_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="낸 비용"
+            android:textSize="20sp"/>
 
     </LinearLayout>
 

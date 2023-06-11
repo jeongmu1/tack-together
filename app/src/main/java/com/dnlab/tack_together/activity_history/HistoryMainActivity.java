@@ -27,6 +27,7 @@ import retrofit2.Response;
 
 public class HistoryMainActivity extends AppCompatActivity {
 
+
 //    private ActivityHistoryMainBinding binding;
 //    private RecyclerView recyclerView;
 //    private RecyclerView.Adapter mAdapter;
@@ -34,6 +35,7 @@ public class HistoryMainActivity extends AppCompatActivity {
 
     private ScrollView historyScrollView;
     private LinearLayout historyItemsLayout;
+
 
 
     private HistoryAPI historyAPI;
@@ -101,8 +103,10 @@ public class HistoryMainActivity extends AppCompatActivity {
         return mainLayout;
     }
 
+
     private List<HistorySummaryListDTO> fetchHistorySummaries() {
         List<HistorySummaryListDTO> historyData = new ArrayList<>();
+
 
         Call<HistorySummaryListDTO> call = historyAPI.handleHistorySummaryList();
         call.enqueue(new Callback<>() {
@@ -112,7 +116,8 @@ public class HistoryMainActivity extends AppCompatActivity {
                     HistorySummaryListDTO historySummaryListDTO = response.body();
                     if (historySummaryListDTO != null) {
                         Log.i(TAG, "이용기록 출력");
-
+                        Log.i(TAG, "history Data : " + historyData.toString());
+                        Log.i(TAG, "historySummaryList : " + historySummaryListDTO);
                     } else {
                         Log.i(TAG, "이용기록 없습니다 출력");
                     }
